@@ -466,7 +466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3044532671867991135
 RectTransform:
   m_ObjectHideFlags: 0
@@ -518,7 +518,8 @@ MonoBehaviour:
   hideAnimation: {fileID: 0}
   pauseAnimation: {fileID: 0}
   resumeAnimation: {fileID: 0}
-  btnList: {fileID: 0}
+  billRowCollector: {fileID: 3923155908731497479}
+  btnAddBill: {fileID: 4221809149459322519}
 --- !u!1 &3044532671955483413
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,6 +1125,7 @@ GameObject:
   - component: {fileID: 3044532672560970919}
   - component: {fileID: 3044532672560970913}
   - component: {fileID: 3044532672560970918}
+  - component: {fileID: 4221809149459322519}
   m_Layer: 5
   m_Name: btnAdd
   m_TagString: Untagged
@@ -1188,6 +1190,35 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4221809149459322519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3044532672560970916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7e3756ce05822045a85c8cce390424d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickScale: 0.95
+  invokeOnce: 0
+  interactable: 1
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+  titleText: {fileID: 0}
+  mainBg: {fileID: 0}
+  mainIcon: {fileID: 0}
+  notifyIcon: {fileID: 0}
+  soundClickEnable: 1
+  clickSoundEffect: {fileID: 0}
+  disableType: 0
+  disableMask: {fileID: 0}
+  disableColor: {r: 0.9, g: 0.9, b: 0.9, a: 0.9}
+  disableMat: {fileID: 0}
+  enableMat: {fileID: 0}
 --- !u!1 &3044532672616288224
 GameObject:
   m_ObjectHideFlags: 0

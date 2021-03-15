@@ -6,6 +6,30 @@ public class BillList : Singleton<BillList>{
     private readonly string saveKey = "BILL_LIST_SAVE_KEY";
     private List<Bill> bills;
 
+    public List<Bill> Bills { get => bills; }
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+        bills = new List<Bill>();
+        bills.Add( new Bill() { 
+            
+        } );
+
+        bills.Add( new Bill() {
+
+        } );
+        bills.Add( new Bill() {
+
+        } );
+        bills.Add( new Bill() {
+
+        } );
+        bills.Add( new Bill() {
+
+        } );
+    }
+
     public void LoadData()
     {
         string json = PlayerPrefs.GetString( saveKey );

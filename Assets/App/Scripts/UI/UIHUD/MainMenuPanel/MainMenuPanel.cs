@@ -22,6 +22,6 @@ public class MainMenuPanel : DOTweenFrame
     private void OnListButtonClicked()
     {
         Hide();
-        //UIHUD.Instance.Show<GameplayPanel>();
+        UIHUD.Instance.Show<ListBillPanel>();
     }
 }

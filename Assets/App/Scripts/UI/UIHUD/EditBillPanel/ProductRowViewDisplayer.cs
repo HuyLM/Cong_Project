@@ -1,20 +1,19 @@
 ﻿using AtoLib;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class BillRowViewDisplayer : ViewDisplayer<Bill>
+public class ProductRowViewDisplayer : ViewDisplayer<Product>
 {
-    [SerializeField] private Image imgState;
     [SerializeField] private TextMeshProUGUI txtNumber;
-    [SerializeField] private TextMeshProUGUI txtDate;
     [SerializeField] private TextMeshProUGUI txtName;
+    [SerializeField] private TextMeshProUGUI txtAmount;
+    [SerializeField] private TextMeshProUGUI txtUnitPrice;
     [SerializeField] private TextMeshProUGUI txtTotalPrice;
     [SerializeField] private ButtonBase btnSelect;
 
     private int number;
-    private Action<BillRowViewDisplayer> onSelect;
+    private Action<ProductRowViewDisplayer> onSelect;
 
 
     private void Start()
@@ -24,10 +23,10 @@ public class BillRowViewDisplayer : ViewDisplayer<Bill>
 
     public override void Show()
     {
-        ShowStateColor();
         ShowNumberText();
-        ShowDateText();
         ShowNameText();
+        ShowAmountText();
+        ShowUnitPrice();
         ShowTotalPriceText();
     }
 
@@ -38,12 +37,12 @@ public class BillRowViewDisplayer : ViewDisplayer<Bill>
 
     private void OnSelectButtonClicked()
     {
-        onSelect?.Invoke( this );
+
     }
 
-    private void ShowStateColor()
+    private void ShowUnitPrice()
     {
-        imgState.color = GlobalResouces.Instance.UIConfigResource.GetBillColor( Model.State );
+        txtUnitPrice.text = System.String.Format( "{0:N0}", Model.UnitPrice );
     }
 
     private void ShowNumberText()
@@ -51,22 +50,22 @@ public class BillRowViewDisplayer : ViewDisplayer<Bill>
         txtNumber.text = number.ToString();
     }
 
-    private void ShowDateText()
+    private void ShowAmountText()
     {
-        txtDate.text = Model.Date.ToString( "dd/MM/yyyy" );
+        txtAmount.text = Model.Amount.ToString("D3");
     }
 
     private void ShowNameText()
     {
-        txtName.text = Model.CustomerName;
+        txtName.text = Model.ProductName;
     }
 
     private void ShowTotalPriceText()
     {
-        txtTotalPrice.text = System.String.Format( "{0:N0}", Model.TotalPrice);
+        txtTotalPrice.text = System.String.Format( "{0:N0}", Model.TotalPrice );
     }
 
-    public BillRowViewDisplayer AddOnSelect(Action<BillRowViewDisplayer> onSelect)
+    public ProductRowViewDisplayer AddOnSelect(Action<ProductRowViewDisplayer> onSelect)
     {
         this.onSelect = onSelect;
         return this;

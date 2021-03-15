@@ -9,7 +9,7 @@ public class Bill  {
     // primary value
     private string customerName;
     private DateTime date;
-    private List<DetailBill> detailbills;
+    private List<Product> products;
     private string note;
     private BillState state;
     private int paid;
@@ -21,7 +21,7 @@ public class Bill  {
 
     public string CustomerName { get => customerName; set => customerName = value; }
     public DateTime Date { get => date; set => date = value; }
-    public List<DetailBill> Detailbills { get => detailbills; }
+    public List<Product> Products { get => products; }
     public string Note { get => note; set => note = value; }
     public BillState State { get => state; }
     public int Paid { get => paid;  }
@@ -45,7 +45,7 @@ public class Bill  {
     {
         customerName = "default";
         date = DateTime.Now;
-        detailbills = new List<DetailBill>();
+        products = new List<Product>();
         note = "this new note";
         state = BillState.Waiting;
         paid = 0;
@@ -70,20 +70,20 @@ public class Bill  {
         }
     }
 
-    public DetailBill AddDetailBill(DetailBill newDetailBill = null)
+    public Product AddProduct(Product newProduct = null)
     {
-        if(newDetailBill == null) {
-            newDetailBill = new DetailBill(this);
+        if(newProduct == null) {
+            newProduct = new Product(this);
         }
-        detailbills.Add(newDetailBill);
+        products.Add(newProduct);
         SetDirty();
-        return newDetailBill;
+        return newProduct;
     }
 
-    public void RemoveDetailBill(DetailBill oldDetailBill)
+    public void RemoveDetailBill(Product oldProduct)
     {
-        if(oldDetailBill != null) {
-            detailbills.Remove( oldDetailBill );
+        if(oldProduct != null) {
+            products.Remove( oldProduct );
             SetDirty();
         }
     }
@@ -91,8 +91,8 @@ public class Bill  {
     public void CalculatingPrice()
     {
         totalPrice = 0;
-        if ( detailbills != null ) {
-            foreach ( var i in detailbills ) {
+        if ( products != null ) {
+            foreach ( var i in products ) {
                 totalPrice += i.TotalPrice;
             }
         }
@@ -106,8 +106,8 @@ public class Bill  {
     public static void Transmission(Bill from, Bill to)
     {
         to.customerName = from.customerName;
-        to.detailbills = from.detailbills;
-        foreach(var detail in to.detailbills) {
+        to.products = from.products;
+        foreach(var detail in to.products) {
             detail.SetBill( to );
         }
         to.note = from.note;

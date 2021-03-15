@@ -3,16 +3,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BillRowCollector : CollectionDisplayer<Bill>
+public class ProductRowCollector : CollectionDisplayer<Product>
 {
-    [SerializeField] private BillRowViewDisplayer prefab;
+    [SerializeField] private ProductRowViewDisplayer prefab;
     [SerializeField] private Transform layout;
 
-    private Action<BillRowViewDisplayer> onSelect;
-    protected readonly List<BillRowViewDisplayer> displayers = new List<BillRowViewDisplayer>();
+    private Action<ProductRowViewDisplayer> onSelect;
+    protected readonly List<ProductRowViewDisplayer> displayers = new List<ProductRowViewDisplayer>();
     public override int DisplayerCount => displayers.Count;
 
-    public BillRowViewDisplayer GetDisplayer(int index)
+    public ProductRowViewDisplayer GetDisplayer(int index)
     {
         if ( index < 0 || index >= DisplayerCount ) {
             return null;
@@ -27,7 +27,7 @@ public class BillRowCollector : CollectionDisplayer<Bill>
                 displayers.Add( CreateDisplayer() );
             }
 
-            BillRowViewDisplayer displayer = GetDisplayer( i );
+            ProductRowViewDisplayer displayer = GetDisplayer( i );
             if ( displayer ) {
                 displayer.gameObject.SetActive( true );
                 displayer.SetNumber( i + 1 );
@@ -36,14 +36,14 @@ public class BillRowCollector : CollectionDisplayer<Bill>
         }
 
         for ( int i = Capacity; i < DisplayerCount; i++ ) {
-            BillRowViewDisplayer displayer = GetDisplayer( i );
+            ProductRowViewDisplayer displayer = GetDisplayer( i );
             if ( displayer ) {
                 displayer.gameObject.SetActive( false );
             }
         }
     }
 
-    public BillRowViewDisplayer GetItemView(Bill data)
+    public ProductRowViewDisplayer GetItemView(Product data)
     {
         foreach ( var displayer in displayers ) {
             if ( displayer.Model == data ) {
@@ -53,7 +53,7 @@ public class BillRowCollector : CollectionDisplayer<Bill>
         return null;
     }
 
-    public void SetupDisplayer(BillRowViewDisplayer displayer, Bill item)
+    public void SetupDisplayer(ProductRowViewDisplayer displayer, Product item)
     {
         if ( displayer == null ) {
             return;
@@ -61,13 +61,13 @@ public class BillRowCollector : CollectionDisplayer<Bill>
         displayer.AddOnSelect(onSelect).SetModel( item ).Show();
     }
 
-    protected BillRowViewDisplayer CreateDisplayer()
+    protected ProductRowViewDisplayer CreateDisplayer()
     {
-        BillRowViewDisplayer viewItem = Instantiate( prefab, layout );
+        ProductRowViewDisplayer viewItem = Instantiate( prefab, layout );
         return viewItem;
     }
 
-    public BillRowCollector AddOnSelect(Action<BillRowViewDisplayer> onSelect)
+    public ProductRowCollector AddOnSelect(Action<ProductRowViewDisplayer> onSelect)
     {
         this.onSelect = onSelect;
         return this;

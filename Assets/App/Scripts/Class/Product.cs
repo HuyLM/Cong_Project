@@ -3,7 +3,7 @@
 
 
 [Serializable]
-public class DetailBill  {
+public class Product  {
 
     // primary value
     private string productName;
@@ -32,7 +32,7 @@ public class DetailBill  {
             return totalPrice;
         }
     }
-    public DetailBill(Bill bill)
+    public Product(Bill bill)
     {
         myBill = bill;
         productName = "New";
