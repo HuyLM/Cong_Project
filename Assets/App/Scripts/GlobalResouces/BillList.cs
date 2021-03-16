@@ -66,6 +66,7 @@ public class BillList : Singleton<BillList>{
     }
 
 
+    [System.Serializable]
     private class SaveDataModel
     {
         public Bill[] b;

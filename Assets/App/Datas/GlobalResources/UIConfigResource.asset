@@ -14,6 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultBillColor: {r: 1, g: 1, b: 1, a: 1}
   doneBillColor: {r: 0, g: 1, b: 0.084820986, a: 1}
-  debtBillColor: {r: 1, g: 0.97164285, b: 0, a: 1}
-  wattingBillColor: {r: 0, g: 0.9706273, b: 1, a: 1}
+  debtBillColor: {r: 1, g: 0.80166054, b: 0, a: 1}
+  wattingBillColor: {r: 0, g: 0.5089133, b: 1, a: 1}
   cancelBillColor: {r: 1, g: 0, b: 0, a: 1}
+  dropDownListItems:
+  - _caption: None
+    _image: {fileID: 21300000, guid: 3555c24f7955981408be87ef4540e747, type: 3}
+    _isDisabled: 0
+    _id: 0
+  - _caption: Done
+    _image: {fileID: 21300000, guid: 94d15fecaf1373046a159b0551df523d, type: 3}
+    _isDisabled: 0
+    _id: 1
+  - _caption: Debt
+    _image: {fileID: 21300000, guid: 418dce87c0a0ced4e9c0797ab2eb7684, type: 3}
+    _isDisabled: 0
+    _id: 2
+  - _caption: Watting
+    _image: {fileID: 21300000, guid: 07dfa57b3a431304da506770e389875a, type: 3}
+    _isDisabled: 0
+    _id: 3
+  - _caption: Cancel
+    _image: {fileID: 21300000, guid: 376056dad1aaf7149bcdbe3e67c62185, type: 3}
+    _isDisabled: 0
+    _id: 4

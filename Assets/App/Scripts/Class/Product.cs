@@ -1,21 +1,21 @@
 ﻿using System;
-
+using UnityEngine;
 
 
 [Serializable]
 public class Product  {
 
     // primary value
-    private string productName;
-    private int amount;
-    private int unitPrice;
+    [SerializeField] private string productName;
+    [SerializeField] private int amount;
+    [SerializeField] private int unitPrice;
 
     // private value
-    [NonSerialized()] private bool isDirty = true;
-    [NonSerialized()] private int totalPrice;
+     private bool isDirty = true;
+     private int totalPrice;
 
     // reference value
-    [NonSerialized()] private Bill myBill;
+    [NonSerialized]private Bill myBill;
 
 
     public string ProductName { get => productName; set => productName = value; }

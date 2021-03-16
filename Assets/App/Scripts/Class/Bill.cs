@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-
-
+using UnityEngine;
 
 [Serializable]
 public class Bill  {
 
     // primary value
-    private string customerName;
-    private DateTime date;
-    private List<Product> products;
-    private string note;
-    private BillState state;
-    private int paid;
+    [SerializeField] private string customerName;
+    [SerializeField] private DateTime date;
+    [SerializeField] private List<Product> products;
+    [SerializeField] private string note;
+    [SerializeField] private BillState state;
+    [SerializeField] private int paid;
 
     // private value
-    [NonSerialized()]private int totalPrice;
-    [NonSerialized()] private bool isDirty = true;
+    private int totalPrice;
+    private bool isDirty = true;
 
 
     public string CustomerName { get => customerName; set => customerName = value; }
@@ -47,7 +46,7 @@ public class Bill  {
         date = DateTime.Now;
         products = new List<Product>();
         note = "this new note";
-        state = BillState.Waiting;
+        state = BillState.None;
         paid = 0;
     }
 
