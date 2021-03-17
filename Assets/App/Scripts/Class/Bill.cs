@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -79,11 +80,42 @@ public class Bill  {
         return newProduct;
     }
 
-    public void RemoveDetailBill(Product oldProduct)
+    public void RemoveProduct(Product oldProduct)
     {
         if(oldProduct != null) {
             products.Remove( oldProduct );
             SetDirty();
+        }
+    }
+
+    public void ChangeState(BillState newState)
+    {
+        BillState oldState = state;
+        state = newState;
+        if(newState != oldState ) {
+            switch ( newState ) {
+                case BillState.None: {
+
+                        break;
+                    }
+                case BillState.Done: {
+
+                        break;
+                    }
+                case BillState.Debt: {
+
+                        break;
+                    }
+                case BillState.Waiting: {
+                        break;
+                    }
+                case BillState.Cancel: {
+                        break;
+                    }
+                default: {
+                        break;
+                    }
+            }
         }
     }
 
@@ -104,6 +136,9 @@ public class Bill  {
 
     public static void Transmission(Bill from, Bill to)
     {
+        if(to == null) {
+            to = new Bill();
+        }
         to.customerName = from.customerName;
         to.products = from.products;
         foreach(var detail in to.products) {
