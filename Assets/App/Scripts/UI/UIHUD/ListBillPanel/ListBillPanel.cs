@@ -24,10 +24,10 @@ public class ListBillPanel : DOTweenFrame
     {
         Bill newBill = new Bill();
         BillList.Instance.Bills.Add( newBill );
-        OpenEditBillPanel(newBill);
+        OpenEditBillPanel(newBill );
     }
 
-    private void OpenEditBillPanel(Bill bill)
+    private void OpenEditBillPanel( Bill bill)
     {
         Hide();
         EditBillPanel editBillPanel = UIHUD.Instance.GetFrame<EditBillPanel>();
@@ -43,7 +43,7 @@ public class ListBillPanel : DOTweenFrame
 
     private void OnSelectBillRow(BillRowViewDisplayer displayer)
     {
-        OpenEditBillPanel( displayer.Model );
+        OpenEditBillPanel(displayer.Model );
     }
 
     private void OnAddBillButtonClicked()

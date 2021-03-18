@@ -51,6 +51,19 @@ public class Bill  {
         paid = 0;
     }
 
+    public Bill(Bill from)
+    {
+        customerName = from.customerName;
+        products = new List<Product>();
+        foreach ( var p in from.products ) {
+            products.Add( new Product( p ) );
+        }
+        note = from.note;
+        state = from.state;
+        paid = from.paid;
+        isDirty = true;
+    }
+
     public void SetPaid(int newPaid)
     {
         this.paid = newPaid;
@@ -136,12 +149,12 @@ public class Bill  {
 
     public static void Transmission(Bill from, Bill to)
     {
-        if(to == null) {
+        if ( to == null ) {
             to = new Bill();
         }
         to.customerName = from.customerName;
         to.products = from.products;
-        foreach(var detail in to.products) {
+        foreach ( var detail in to.products ) {
             detail.SetBill( to );
         }
         to.note = from.note;

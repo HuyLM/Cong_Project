@@ -12,7 +12,6 @@ public class EditBillPanel : DOTweenFrame
 {
     [SerializeField] private ProductRowCollector productRowCollector;
     [SerializeField] private AutoCompleteComboBox cbName;
-    [SerializeField] private InputField ipName;
     [SerializeField] private DropDownList ddState;
     [SerializeField] private TMP_InputField ipNote;
     [SerializeField] private ButtonBase btnSave;
@@ -29,6 +28,7 @@ public class EditBillPanel : DOTweenFrame
         ipNote.onEndEdit.AddListener( OnNoteEndEdit );
         btnSave.onClick.AddListener( OnSaveButtonClicked );
         btnCancel.onClick.AddListener( OnCancelButtonClicked );
+        btnUndo.onClick.AddListener( OnUndoButtonClicked );
     }
     protected override void OnShow(Action onCompleted = null, bool instant = false)
     {
@@ -41,6 +41,7 @@ public class EditBillPanel : DOTweenFrame
         ShowProducts();
         ShowNameCombox();
         SetDropDownListState();
+        ShowNoteText();
         StartCoroutine( IDelayAFrame() );
     }
 
@@ -56,9 +57,12 @@ public class EditBillPanel : DOTweenFrame
         return base.OnBack();
     }
 
-    public void SetOpenBill(Bill bill)
+    public void SetOpenBill( Bill bill)
     {
         this.originBill = bill;
+        if ( curBill == null ) {
+            curBill = new Bill();
+        }
         Bill.Transmission( originBill, curBill );
     }
 
@@ -91,8 +95,9 @@ public class EditBillPanel : DOTweenFrame
                 allName.Add( b.CustomerName );
             }
         }
+        cbName.InputComponent.text = curBill.CustomerName;
         cbName.SetAvailableOptions(allName);
-        ipName.text = curBill.CustomerName;
+        cbName.ItemsToDisplay = 5;
 
     }
 
@@ -135,6 +140,9 @@ public class EditBillPanel : DOTweenFrame
     #region Buttons
     private void OnSaveButtonClicked()
     {
+        if ( curBill == null ) {
+            curBill = new Bill();
+        }
         Bill.Transmission( curBill, originBill );
         Hide();
         UIHUD.Instance.Show<ListBillPanel>();
@@ -148,6 +156,9 @@ public class EditBillPanel : DOTweenFrame
 
     private void OnUndoButtonClicked()
     {
+        if(curBill == null) {
+            curBill = new Bill();
+        }
         Bill.Transmission( originBill, curBill );
         ShowUI();
     }

@@ -40,6 +40,14 @@ public class Product  {
         unitPrice = 96;
     }
 
+    public Product(Product product)
+    {
+        this.productName = product.productName;
+        this.amount = product.amount;
+        this.unitPrice = product.unitPrice;
+        this.myBill = product.myBill;
+    }
+
     public void SetAmount(int newAmount)
     {
         amount = newAmount;

@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 
 namespace UnityEngine.UI.Extensions
 {
@@ -25,7 +26,7 @@ namespace UnityEngine.UI.Extensions
         private bool _isPanelActive = false;
         private bool _hasDrawnOnce = false;
 
-        private InputField _mainInput;
+        private TMP_InputField _mainInput;
         private RectTransform _inputRT;
 
 		//private Button _arrow_Button;
@@ -51,6 +52,7 @@ namespace UnityEngine.UI.Extensions
         private GameObject itemTemplate;
 
         public string Text { get; private set; }
+        public TMP_InputField InputComponent { get => _mainInput; }
 
         [SerializeField]
         private float _scrollBarWidth = 20.0f;
@@ -144,7 +146,7 @@ namespace UnityEngine.UI.Extensions
             {
                 _rectTransform = GetComponent<RectTransform>();
                 _inputRT = _rectTransform.Find("InputField").GetComponent<RectTransform>();
-                _mainInput = _inputRT.GetComponent<InputField>();
+                _mainInput = _inputRT.GetComponent<TMP_InputField>();
 
 				//_arrow_Button = _rectTransform.FindChild ("ArrowBtn").GetComponent<Button> ();
 
@@ -361,8 +363,6 @@ namespace UnityEngine.UI.Extensions
 
         public void OnValueChanged(string currText)
         {
-            if ( !_mainInput.isFocused )
-                return;
             Text = currText;
             PruneItems(currText);
             RedrawPanel();
