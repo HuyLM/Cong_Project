@@ -20,7 +20,7 @@ public class Product  {
 
     public string ProductName { get => productName; set => productName = value; }
     public int Amount { get => amount;}
-    public int UnitPrice { get => unitPrice; set => unitPrice = value; }
+    public int UnitPrice { get => unitPrice; }
 
     public int TotalPrice
     {
@@ -32,12 +32,21 @@ public class Product  {
             return totalPrice;
         }
     }
+
+    public Product()
+    {
+        myBill = null;
+        productName = "New";
+        amount = 0;
+        unitPrice = 0;
+    }
+
     public Product(Bill bill)
     {
         myBill = bill;
         productName = "New";
-        amount = 69;
-        unitPrice = 96;
+        amount = 0;
+        unitPrice = 0;
     }
 
     public Product(Product product)
@@ -64,10 +73,26 @@ public class Product  {
     {
         this.myBill = newBill;
     }
+
+    public Bill GetBill( )
+    {
+        return this.myBill;
+    }
+
     public void SetDirty()
     {
         isDirty = true;
-        myBill.SetDirty();
+        if(myBill != null ) {
+            myBill.SetDirty();
+        }
+    }
+
+    public static void Transmission(Product from, Product to)
+    {
+        to.productName = from.productName;
+        to.amount = from.amount;
+        to.unitPrice = from.unitPrice;
+        to.myBill = from.myBill;
     }
 
 }

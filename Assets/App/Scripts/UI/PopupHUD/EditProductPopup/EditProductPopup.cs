@@ -1,0 +1,179 @@
+﻿using UnityEngine;
+using TMPro;
+using AtoLib;
+using System;
+using AtoLib.Helper;
+using System.Collections;
+
+public class EditProductPopup : BasePopup
+{
+    [SerializeField] private TMP_InputField ipName;
+    [SerializeField] private TMP_InputField ipUnitPrice;
+    [SerializeField] private TMP_InputField ipAmount;
+    [SerializeField] private TextMeshProUGUI txtTotalPrice;
+    [SerializeField] private ButtonBase btnSave;
+    [SerializeField] private ButtonBase btnDel;
+    [SerializeField] private ButtonBase btnCancel;
+
+    private Product curProduct;
+    private Product originProduct;
+
+    protected override void Start()
+    {
+        base.Start();
+        btnSave.onClick.AddListener( OnSaveButtonClicked );
+        btnDel.onClick.AddListener( OnDeleteButtonClicked );
+        btnCancel.onClick.AddListener( OnCancelButtonClicked );
+        ipName.onEndEdit.AddListener( OnNameEndEdit );
+        ipUnitPrice.onEndEdit.AddListener( OnUnitPriceEndEdit );
+        ipUnitPrice.onValueChanged.AddListener(OnUnitPriceOnValueChanged);
+        ipAmount.onEndEdit.AddListener( OnAmountEndEdit );
+        ipAmount.onValueChanged.AddListener( OnAmountOnValueChanged );
+
+    }
+
+    protected override void OnShow(Action onCompleted = null, bool instant = false)
+    {
+        base.OnShow( onCompleted, instant );
+        ShowUI();
+    }
+
+    protected override void OnHide(Action onCompleted = null, bool instant = false)
+    {
+        base.OnHide( onCompleted, instant );
+        UIHUD.Instance.GetActiveFrame<EditBillPanel>().Refresh();
+    }
+
+    public void SetOpenProduct(Product product)
+    {
+        this.originProduct = product;
+        if ( curProduct == null ) {
+            curProduct = new Product();
+        }
+        Product.Transmission( originProduct, curProduct );
+    }
+
+    #region ShowUI
+
+    private void ShowUI()
+    {
+        ShowNameText();
+        ShowUnitPriceText();
+        ShowAmountText();
+        ShowTotalPrice();
+    }
+
+    private void ShowTotalPrice()
+    {
+        txtTotalPrice.text = StringHelper.GetCommaCurrencyFormat(curProduct.TotalPrice);
+    }
+
+    private void ShowNameText()
+    {
+        ipName.text = curProduct.ProductName;
+    }
+
+    private void OnNameEndEdit(string text)
+    {
+        curProduct.ProductName = text;
+    }
+
+    private void ShowUnitPriceText()
+    {
+        ipUnitPrice.SetTextWithoutNotify(StringHelper.GetCommaCurrencyFormat( curProduct.UnitPrice ));
+    }
+
+    private void OnUnitPriceEndEdit(string text)
+    {
+        string valText = text.Replace( ",", string.Empty );
+        if ( string.IsNullOrEmpty( valText ) ) {
+            curProduct.SetUnitPrice( 0 );
+        }else {
+            curProduct.SetUnitPrice( int.Parse( valText ) );
+        }
+        ShowUI();
+    }
+
+    private void OnUnitPriceOnValueChanged(string text)
+    {
+        string valText = text.Replace( ",", string.Empty );
+        if(string.IsNullOrEmpty(valText)) {
+            curProduct.SetUnitPrice(0);
+        }
+        else {
+            curProduct.SetUnitPrice(int.Parse( valText ));
+        }
+        ShowUI();
+        StopCoroutine(IDelyUnitPriceMoveEnd());
+        StartCoroutine( IDelyUnitPriceMoveEnd() );
+    }
+
+    private IEnumerator IDelyUnitPriceMoveEnd()
+    {
+        yield return null;
+        ipUnitPrice.MoveTextEnd( false );
+    }
+
+    private void ShowAmountText()
+    {
+        ipAmount.text = StringHelper.GetCommaCurrencyFormat( curProduct.Amount );
+    }
+
+    private void OnAmountEndEdit(string text)
+    {
+        string valText = text.Replace( ",", string.Empty );
+        if ( string.IsNullOrEmpty( valText ) ) {
+            curProduct.SetAmount(0);
+        }
+        else {
+            curProduct.SetAmount( int.Parse( valText ) );
+        }
+        ShowUI();
+    }
+
+    private void OnAmountOnValueChanged(string text)
+    {
+        string valText = text.Replace( ",", string.Empty );
+        if ( string.IsNullOrEmpty( valText ) ) {
+            curProduct.SetAmount( 0 );
+        }
+        else {
+            curProduct.SetAmount( int.Parse( valText ) );
+        }
+        ShowUI();
+        StopCoroutine( IDelyAmountMoveEnd() );
+        StartCoroutine( IDelyAmountMoveEnd() );
+    }
+
+    private IEnumerator IDelyAmountMoveEnd()
+    {
+        yield return null;
+        ipUnitPrice.MoveTextEnd( false );
+    }
+
+    #endregion
+
+    #region Buttons listener
+    private void OnSaveButtonClicked()
+    {
+        if ( curProduct == null ) {
+            curProduct = new Product();
+        }
+        Product.Transmission( curProduct, originProduct );
+        Hide();
+    }
+
+    private void OnDeleteButtonClicked()
+    {
+        Bill bill = originProduct.GetBill();
+        if(bill != null) {
+            bill.RemoveProduct( originProduct );
+        }
+        Hide();
+    }
+    private void OnCancelButtonClicked()
+    {
+        Hide();
+    }
+    #endregion
+}

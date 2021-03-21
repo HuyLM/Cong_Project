@@ -3,10 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using TMPro;
 using AtoLib;
+using AtoLib.Helper;
 
 public class EditBillPanel : DOTweenFrame
 {
@@ -14,9 +14,14 @@ public class EditBillPanel : DOTweenFrame
     [SerializeField] private AutoCompleteComboBox cbName;
     [SerializeField] private DropDownList ddState;
     [SerializeField] private TMP_InputField ipNote;
+    [SerializeField] private TextMeshProUGUI txtTotalPrice;
+    [SerializeField] private TMP_InputField ipPaid;
+    [SerializeField] private TextMeshProUGUI txtDebt;
     [SerializeField] private ButtonBase btnSave;
     [SerializeField] private ButtonBase btnCancel;
     [SerializeField] private ButtonBase btnUndo;
+    [SerializeField] private ButtonBase btnDel;
+    [SerializeField] private ButtonBase btnAddProduct;
 
     private Bill curBill;
     private Bill originBill;
@@ -29,10 +34,25 @@ public class EditBillPanel : DOTweenFrame
         btnSave.onClick.AddListener( OnSaveButtonClicked );
         btnCancel.onClick.AddListener( OnCancelButtonClicked );
         btnUndo.onClick.AddListener( OnUndoButtonClicked );
+        btnAddProduct.onClick.AddListener( OnAddProductButtonClicked );
+        btnDel.onClick.AddListener( OnDeleteButtonClicked );
+        ipPaid.onEndEdit.AddListener(OnPaidEndEdit);
+        ipPaid.onValueChanged.AddListener( OnPaidOnValueChanged );
     }
     protected override void OnShow(Action onCompleted = null, bool instant = false)
     {
         base.OnShow( onCompleted, instant );
+        ShowUI();
+    }
+
+    protected override void OnResume(Action onCompleted = null, bool instant = false)
+    {
+        base.OnResume( onCompleted, instant );
+        ShowUI();
+    }
+
+    public void Refresh()
+    {
         ShowUI();
     }
 
@@ -42,6 +62,9 @@ public class EditBillPanel : DOTweenFrame
         ShowNameCombox();
         SetDropDownListState();
         ShowNoteText();
+        ShowTotalPrice();
+        ShowPaidText();
+        ShowDebtText();
         StartCoroutine( IDelayAFrame() );
     }
 
@@ -49,12 +72,6 @@ public class EditBillPanel : DOTweenFrame
     {
         yield return null;
         ShowState();
-    }
-
-    public override Frame OnBack()
-    {
-        UIHUD.Instance.Show<ListBillPanel>();
-        return base.OnBack();
     }
 
     public void SetOpenBill( Bill bill)
@@ -70,7 +87,9 @@ public class EditBillPanel : DOTweenFrame
 
     private void OpenEditProductPopup(Product product)
     {
-        Debug.Log($"Open Edit Product: {product.ProductName}");
+        Pause();
+        PopupHUD.Instance.GetFrame<EditProductPopup>().SetOpenProduct(product);
+        PopupHUD.Instance.Show<EditProductPopup>();
     }
 
     private void ShowProducts()
@@ -81,6 +100,13 @@ public class EditBillPanel : DOTweenFrame
     private void OnSelectProductRow(ProductRowViewDisplayer displayer)
     {
         OpenEditProductPopup( displayer.Model );
+    }
+
+    private void OnAddProductButtonClicked()
+    {
+        Product newProduct = new Product(curBill);
+        curBill.AddProduct( newProduct );
+        OpenEditProductPopup( newProduct );
     }
 
     #endregion
@@ -145,13 +171,11 @@ public class EditBillPanel : DOTweenFrame
         }
         Bill.Transmission( curBill, originBill );
         Hide();
-        UIHUD.Instance.Show<ListBillPanel>();
     }
 
     private void OnCancelButtonClicked()
     {
         Hide();
-        UIHUD.Instance.Show<ListBillPanel>();
     }
 
     private void OnUndoButtonClicked()
@@ -162,6 +186,65 @@ public class EditBillPanel : DOTweenFrame
         Bill.Transmission( originBill, curBill );
         ShowUI();
     }
+
+    private void OnDeleteButtonClicked()
+    {
+        List<Bill> bills = BillList.Instance.Bills;
+        bills.Remove( originBill );
+        Hide();
+    }
     #endregion
 
+
+    #region Total, Debt, Paid
+    private void ShowTotalPrice()
+    {
+        txtTotalPrice.text = StringHelper.GetCommaCurrencyFormat(curBill.TotalPrice);
+    }
+
+    private void ShowPaidText()
+    {
+        ipPaid.text = StringHelper.GetCommaCurrencyFormat( curBill.Paid );
+    }
+
+    private void OnPaidEndEdit(string text)
+    {
+        string valText = text.Replace( ",", string.Empty );
+        if ( string.IsNullOrEmpty( valText ) ) {
+            curBill.SetPaid( 0 );
+        }
+        else {
+            curBill.SetPaid( int.Parse( valText ) );
+        }
+        ShowUI();
+    }
+
+    private void OnPaidOnValueChanged(string text)
+    {
+        string valText = text.Replace( ",", string.Empty );
+        if ( string.IsNullOrEmpty( valText ) ) {
+            curBill.SetPaid( 0 );
+        }
+        else {
+            int valInt = int.Parse( valText );
+            valInt = Mathf.Clamp(valInt, 0, curBill.TotalPrice);
+            curBill.SetPaid( valInt );
+        }
+        ShowUI();
+        StopCoroutine( IDelyPaidMoveEnd() );
+        StartCoroutine( IDelyPaidMoveEnd() );
+    }
+
+    private IEnumerator IDelyPaidMoveEnd()
+    {
+        yield return null;
+        ipPaid.MoveTextEnd( false );
+    }
+
+    private void ShowDebtText()
+    {
+        txtDebt.text = StringHelper.GetCommaCurrencyFormat( curBill.Debt );
+    }
+
+    #endregion
 }

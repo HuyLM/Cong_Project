@@ -46,7 +46,7 @@ public class Bill  {
         customerName = "default";
         date = DateTime.Now;
         products = new List<Product>();
-        note = "this new note";
+        note = "Không có";
         state = BillState.None;
         paid = 0;
     }

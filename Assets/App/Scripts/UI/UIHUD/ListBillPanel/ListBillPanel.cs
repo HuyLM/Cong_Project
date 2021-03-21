@@ -15,6 +15,12 @@ public class ListBillPanel : DOTweenFrame
         ShowBills();
     }
 
+    protected override void OnResume(Action onCompleted = null, bool instant = false)
+    {
+        base.OnResume( onCompleted, instant );
+        ShowBills();
+    }
+
     private void Start()
     {
         btnAddBill.onClick.AddListener(OnAddBillButtonClicked);
@@ -29,7 +35,8 @@ public class ListBillPanel : DOTweenFrame
 
     private void OpenEditBillPanel( Bill bill)
     {
-        Hide();
+        //Hide();
+        Pause();
         EditBillPanel editBillPanel = UIHUD.Instance.GetFrame<EditBillPanel>();
         editBillPanel.SetOpenBill( bill );
         UIHUD.Instance.Show<EditBillPanel>();

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a8a11b8648c6b43bc50ada44484a3e, type: 3}
   m_Name: UIConfigResource
   m_EditorClassIdentifier: 
-  defaultBillColor: {r: 0.75294125, g: 0.75294125, b: 0.75294125, a: 1}
+  defaultBillColor: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
   doneBillColor: {r: 0, g: 1, b: 0.084820986, a: 1}
   debtBillColor: {r: 1, g: 0.80166054, b: 0, a: 1}
   wattingBillColor: {r: 0, g: 0.5089133, b: 1, a: 1}

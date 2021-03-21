@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using AtoLib.Helper;
 
 public class BillRowViewDisplayer : ViewDisplayer<Bill>
 {
@@ -63,7 +64,7 @@ public class BillRowViewDisplayer : ViewDisplayer<Bill>
 
     private void ShowTotalPriceText()
     {
-        txtTotalPrice.text = System.String.Format( "{0:N0}", Model.TotalPrice);
+        txtTotalPrice.text = StringHelper.GetCommaCurrencyFormat( Model.TotalPrice );
     }
 
     public BillRowViewDisplayer AddOnSelect(Action<BillRowViewDisplayer> onSelect)

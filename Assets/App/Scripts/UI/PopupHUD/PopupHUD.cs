@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AtoLib.UI;
+using UnityEngine;
 
-public class PopupHUD : MonoBehaviour {
+public class PopupHUD : HUD<PopupHUD> {
 }

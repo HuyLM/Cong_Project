@@ -12,22 +12,6 @@ public class BillList : Singleton<BillList>{
     {
         base.Initialize();
         bills = new List<Bill>();
-        bills.Add( new Bill() { 
-            
-        } );
-
-        bills.Add( new Bill() {
-
-        } );
-        bills.Add( new Bill() {
-
-        } );
-        bills.Add( new Bill() {
-
-        } );
-        bills.Add( new Bill() {
-
-        } );
     }
 
     public void LoadData()

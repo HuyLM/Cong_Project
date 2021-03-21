@@ -2,6 +2,7 @@
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class ProductRowViewDisplayer : ViewDisplayer<Product>
 {
@@ -11,6 +12,9 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product>
     [SerializeField] private TextMeshProUGUI txtUnitPrice;
     [SerializeField] private TextMeshProUGUI txtTotalPrice;
     [SerializeField] private ButtonBase btnSelect;
+    [SerializeField] private Image imgBackground;
+    [SerializeField] private Color color1;
+    [SerializeField] private Color color2;
 
     private int number;
     private Action<ProductRowViewDisplayer> onSelect;
@@ -28,6 +32,7 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product>
         ShowAmountText();
         ShowUnitPrice();
         ShowTotalPriceText();
+        ShowBackgroundColor();
     }
 
     public void SetNumber(int number)
@@ -37,7 +42,7 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product>
 
     private void OnSelectButtonClicked()
     {
-
+        onSelect?.Invoke( this );
     }
 
     private void ShowUnitPrice()
@@ -63,6 +68,16 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product>
     private void ShowTotalPriceText()
     {
         txtTotalPrice.text = System.String.Format( "{0:N0}", Model.TotalPrice );
+    }
+
+    private void ShowBackgroundColor()
+    {
+        if(number % 2 == 0) {
+            imgBackground.color = color1;
+        }
+        else {
+            imgBackground.color = color2;
+        }
     }
 
     public ProductRowViewDisplayer AddOnSelect(Action<ProductRowViewDisplayer> onSelect)
