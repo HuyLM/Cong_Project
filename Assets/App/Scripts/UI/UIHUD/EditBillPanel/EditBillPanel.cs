@@ -13,7 +13,6 @@ public class EditBillPanel : DOTweenFrame
     [SerializeField] private ProductRowCollector productRowCollector;
     [SerializeField] private AutoCompleteComboBox cbName;
     [SerializeField] private DropDownList ddState;
-    [SerializeField] private TMP_InputField ipNote;
     [SerializeField] private TextMeshProUGUI txtTotalPrice;
     [SerializeField] private TMP_InputField ipPaid;
     [SerializeField] private TextMeshProUGUI txtDebt;
@@ -30,7 +29,6 @@ public class EditBillPanel : DOTweenFrame
     {
         cbName.OnSelectionChanged.AddListener( OnNameSelectionChanged );
         ddState.OnSelectionChanged.AddListener( OnStateSelected );
-        ipNote.onEndEdit.AddListener( OnNoteEndEdit );
         btnSave.onClick.AddListener( OnSaveButtonClicked );
         btnCancel.onClick.AddListener( OnCancelButtonClicked );
         btnUndo.onClick.AddListener( OnUndoButtonClicked );
@@ -151,17 +149,7 @@ public class EditBillPanel : DOTweenFrame
     }
     #endregion
 
-    #region Note 
-    private void ShowNoteText()
-    {
-        ipNote.text = curBill.Note;
-    }
-
-    private void OnNoteEndEdit(string text)
-    {
-        curBill.Note = text;
-    }
-    #endregion
+   
 
     #region Buttons
     private void OnSaveButtonClicked()

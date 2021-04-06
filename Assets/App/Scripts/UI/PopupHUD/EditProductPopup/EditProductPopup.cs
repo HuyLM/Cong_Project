@@ -11,6 +11,8 @@ public class EditProductPopup : BasePopup
     [SerializeField] private TMP_InputField ipUnitPrice;
     [SerializeField] private TMP_InputField ipAmount;
     [SerializeField] private TextMeshProUGUI txtTotalPrice;
+    [SerializeField] private TMP_InputField ipNote;
+
     [SerializeField] private ButtonBase btnSave;
     [SerializeField] private ButtonBase btnDel;
     [SerializeField] private ButtonBase btnCancel;
@@ -21,6 +23,7 @@ public class EditProductPopup : BasePopup
     protected override void Start()
     {
         base.Start();
+        ipNote.onEndEdit.AddListener(OnNoteEndEdit);
         btnSave.onClick.AddListener( OnSaveButtonClicked );
         btnDel.onClick.AddListener( OnDeleteButtonClicked );
         btnCancel.onClick.AddListener( OnCancelButtonClicked );
@@ -29,7 +32,6 @@ public class EditProductPopup : BasePopup
         ipUnitPrice.onValueChanged.AddListener(OnUnitPriceOnValueChanged);
         ipAmount.onEndEdit.AddListener( OnAmountEndEdit );
         ipAmount.onValueChanged.AddListener( OnAmountOnValueChanged );
-
     }
 
     protected override void OnShow(Action onCompleted = null, bool instant = false)
@@ -61,6 +63,7 @@ public class EditProductPopup : BasePopup
         ShowUnitPriceText();
         ShowAmountText();
         ShowTotalPrice();
+        ShowNoteText();
     }
 
     private void ShowTotalPrice()
@@ -174,6 +177,16 @@ public class EditProductPopup : BasePopup
     private void OnCancelButtonClicked()
     {
         Hide();
+    }
+    #endregion
+
+    #region Note 
+    private void ShowNoteText() {
+        ipNote.text = curProduct.Note;
+    }
+
+    private void OnNoteEndEdit(string text) {
+        curProduct.Note = text;
     }
     #endregion
 }

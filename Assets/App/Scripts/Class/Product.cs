@@ -9,9 +9,11 @@ public class Product  {
     [SerializeField] private string productName;
     [SerializeField] private int amount;
     [SerializeField] private int unitPrice;
+    [SerializeField] private string note;
+
 
     // private value
-     private bool isDirty = true;
+    private bool isDirty = true;
      private int totalPrice;
 
     // reference value
@@ -21,6 +23,8 @@ public class Product  {
     public string ProductName { get => productName; set => productName = value; }
     public int Amount { get => amount;}
     public int UnitPrice { get => unitPrice; }
+    public string Note { get => note; set => note = value; }
+
 
     public int TotalPrice
     {
@@ -39,6 +43,8 @@ public class Product  {
         productName = "New";
         amount = 0;
         unitPrice = 0;
+        note = "Không có";
+
     }
 
     public Product(Bill bill)
@@ -47,6 +53,8 @@ public class Product  {
         productName = "New";
         amount = 0;
         unitPrice = 0;
+        note = "Không có";
+
     }
 
     public Product(Product product)
@@ -55,6 +63,7 @@ public class Product  {
         this.amount = product.amount;
         this.unitPrice = product.unitPrice;
         this.myBill = product.myBill;
+        this.note = product.note;
     }
 
     public void SetAmount(int newAmount)
@@ -93,6 +102,8 @@ public class Product  {
         to.amount = from.amount;
         to.unitPrice = from.unitPrice;
         to.myBill = from.myBill;
+        to.note = from.note;
+
     }
 
 }

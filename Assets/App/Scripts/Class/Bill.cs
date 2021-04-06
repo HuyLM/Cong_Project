@@ -10,7 +10,6 @@ public class Bill  {
     [SerializeField] private string customerName;
     [SerializeField] private DateTime date;
     [SerializeField] private List<Product> products;
-    [SerializeField] private string note;
     [SerializeField] private BillState state;
     [SerializeField] private int paid;
 
@@ -22,7 +21,6 @@ public class Bill  {
     public string CustomerName { get => customerName; set => customerName = value; }
     public DateTime Date { get => date; set => date = value; }
     public List<Product> Products { get => products; }
-    public string Note { get => note; set => note = value; }
     public BillState State { get => state; }
     public int Paid { get => paid;  }
     public int TotalPrice {
@@ -46,7 +44,6 @@ public class Bill  {
         customerName = "default";
         date = DateTime.Now;
         products = new List<Product>();
-        note = "Không có";
         state = BillState.None;
         paid = 0;
     }
@@ -58,7 +55,7 @@ public class Bill  {
         foreach ( var p in from.products ) {
             products.Add( new Product( p ) );
         }
-        note = from.note;
+       
         state = from.state;
         paid = from.paid;
         isDirty = true;
@@ -157,7 +154,6 @@ public class Bill  {
         foreach ( var detail in to.products ) {
             detail.SetBill( to );
         }
-        to.note = from.note;
         to.state = from.state;
         to.paid = from.paid;
         to.isDirty = true;

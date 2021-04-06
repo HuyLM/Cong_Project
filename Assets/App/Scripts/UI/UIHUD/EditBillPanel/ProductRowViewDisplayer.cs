@@ -8,6 +8,7 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product>
 {
     [SerializeField] private TextMeshProUGUI txtNumber;
     [SerializeField] private TextMeshProUGUI txtName;
+    [SerializeField] private TextMeshProUGUI txtNote;
     [SerializeField] private TextMeshProUGUI txtAmount;
     [SerializeField] private TextMeshProUGUI txtUnitPrice;
     [SerializeField] private TextMeshProUGUI txtTotalPrice;
@@ -78,6 +79,10 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product>
         else {
             imgBackground.color = color2;
         }
+    }
+
+    private void ShowNoteText() {
+        txtNote.text = Model.Note;
     }
 
     public ProductRowViewDisplayer AddOnSelect(Action<ProductRowViewDisplayer> onSelect)
