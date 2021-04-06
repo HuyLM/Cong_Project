@@ -80,7 +80,7 @@ public class SearchPanel : DOTweenFrame {
     }
 
     private void OnBackButtonClicked() {
-
+        OnBack();
     }
 
     private void OnNameSelectionChanged(string text, bool isSelect) {

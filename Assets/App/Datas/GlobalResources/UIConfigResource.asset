@@ -18,23 +18,23 @@ MonoBehaviour:
   wattingBillColor: {r: 0, g: 0.5089133, b: 1, a: 1}
   cancelBillColor: {r: 1, g: 0, b: 0, a: 1}
   dropDownListItems:
-  - _caption: None
+  - _caption: "Kh\xF4ng"
     _image: {fileID: 21300000, guid: 9fc9d3468f65e0c41b3ce9c320515a04, type: 3}
     _isDisabled: 0
     _id: 0
-  - _caption: Done
+  - _caption: "\u0110\xE3 Xong"
     _image: {fileID: 21300000, guid: 94d15fecaf1373046a159b0551df523d, type: 3}
     _isDisabled: 0
     _id: 1
-  - _caption: Debt
+  - _caption: "\u0110ang N\u1EE3"
     _image: {fileID: 21300000, guid: 418dce87c0a0ced4e9c0797ab2eb7684, type: 3}
     _isDisabled: 0
     _id: 2
-  - _caption: Watting
+  - _caption: "\u0110ang Giao"
     _image: {fileID: 21300000, guid: 07dfa57b3a431304da506770e389875a, type: 3}
     _isDisabled: 0
     _id: 3
-  - _caption: Cancel
+  - _caption: "\u0110\xE3 Hu\u1EF7"
     _image: {fileID: 21300000, guid: 376056dad1aaf7149bcdbe3e67c62185, type: 3}
     _isDisabled: 0
     _id: 4

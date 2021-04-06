@@ -13,6 +13,10 @@ public class MainMenuPanel : DOTweenFrame {
 
     }
 
+    public override Frame OnBack() {
+        return this;
+    }
+
     private void Start() {
         btnList.onClick.AddListener(OnListButtonClicked);
         btnSearch.onClick.AddListener(OnSearchButtonClicked);
