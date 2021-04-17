@@ -4,8 +4,7 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 
-public class ProductRowViewDisplayer : ViewDisplayer<Product>
-{
+public class ProductRowViewDisplayer : ViewDisplayer<Product> {
     [SerializeField] private TextMeshProUGUI txtNumber;
     [SerializeField] private TextMeshProUGUI txtName;
     [SerializeField] private TextMeshProUGUI txtNote;
@@ -21,62 +20,52 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product>
     private Action<ProductRowViewDisplayer> onSelect;
 
 
-    private void Start()
-    {
-        btnSelect.onClick.AddListener( OnSelectButtonClicked );
+    private void Start() {
+        btnSelect.onClick.AddListener(OnSelectButtonClicked);
     }
 
-    public override void Show()
-    {
+    public override void Show() {
         ShowNumberText();
         ShowNameText();
+        ShowNoteText();
         ShowAmountText();
         ShowUnitPrice();
         ShowTotalPriceText();
         ShowBackgroundColor();
     }
 
-    public void SetNumber(int number)
-    {
+    public void SetNumber(int number) {
         this.number = number;
     }
 
-    private void OnSelectButtonClicked()
-    {
-        onSelect?.Invoke( this );
+    private void OnSelectButtonClicked() {
+        onSelect?.Invoke(this);
     }
 
-    private void ShowUnitPrice()
-    {
-        txtUnitPrice.text = System.String.Format( "{0:N0}", Model.UnitPrice );
+    private void ShowUnitPrice() {
+        txtUnitPrice.text = System.String.Format("{0:N0}", Model.UnitPrice);
     }
 
-    private void ShowNumberText()
-    {
+    private void ShowNumberText() {
         txtNumber.text = number.ToString();
     }
 
-    private void ShowAmountText()
-    {
+    private void ShowAmountText() {
         txtAmount.text = Model.Amount.ToString("D3");
     }
 
-    private void ShowNameText()
-    {
+    private void ShowNameText() {
         txtName.text = Model.ProductName;
     }
 
-    private void ShowTotalPriceText()
-    {
-        txtTotalPrice.text = System.String.Format( "{0:N0}", Model.TotalPrice );
+    private void ShowTotalPriceText() {
+        txtTotalPrice.text = System.String.Format("{0:N0}", Model.TotalPrice);
     }
 
-    private void ShowBackgroundColor()
-    {
-        if(number % 2 == 0) {
+    private void ShowBackgroundColor() {
+        if (number % 2 == 0) {
             imgBackground.color = color1;
-        }
-        else {
+        } else {
             imgBackground.color = color2;
         }
     }
@@ -85,8 +74,7 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product>
         txtNote.text = Model.Note;
     }
 
-    public ProductRowViewDisplayer AddOnSelect(Action<ProductRowViewDisplayer> onSelect)
-    {
+    public ProductRowViewDisplayer AddOnSelect(Action<ProductRowViewDisplayer> onSelect) {
         this.onSelect = onSelect;
         return this;
     }
