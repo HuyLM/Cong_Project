@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class Bill  {
+public class Bill
+{
 
     // primary value
     [SerializeField] private string customerName;
-    [SerializeField] private DateTime date;
+    [SerializeField] private JsonDateTime date;
     [SerializeField] private List<Product> products;
     [SerializeField] private BillState state;
     [SerializeField] private int paid;
@@ -22,10 +23,13 @@ public class Bill  {
     public DateTime Date { get => date; set => date = value; }
     public List<Product> Products { get => products; }
     public BillState State { get => state; }
-    public int Paid { get => paid;  }
-    public int TotalPrice {
-        get {
-            if(isDirty) {
+    public int Paid { get => paid; }
+    public int TotalPrice
+    {
+        get
+        {
+            if (isDirty)
+            {
                 CalculatingPrice();
                 isDirty = false;
             }
@@ -34,7 +38,8 @@ public class Bill  {
     }
     public int Debt
     {
-        get {
+        get
+        {
             return totalPrice - paid;
         }
     }
@@ -52,10 +57,11 @@ public class Bill  {
     {
         customerName = from.customerName;
         products = new List<Product>();
-        foreach ( var p in from.products ) {
-            products.Add( new Product( p ) );
+        foreach (var p in from.products)
+        {
+            products.Add(new Product(p));
         }
-       
+
         state = from.state;
         paid = from.paid;
         isDirty = true;
@@ -64,25 +70,29 @@ public class Bill  {
     public void SetPaid(int newPaid)
     {
         this.paid = newPaid;
-        if(paid >= TotalPrice) {
-            switch ( state ) {
-                case BillState.Debt: {
-                        state = BillState.Done;
-                        break;
+        if (paid >= TotalPrice)
+        {
+            switch (state)
+            {
+                case BillState.Debt:
+                {
+                    state = BillState.Done;
+                    break;
                 }
                 case BillState.Waiting:
                 case BillState.None:
                 case BillState.Done:
                 case BillState.Cancel:
                 default:
-                    break;
+                break;
             }
         }
     }
 
     public Product AddProduct(Product newProduct = null)
     {
-        if(newProduct == null) {
+        if (newProduct == null)
+        {
             newProduct = new Product(this);
         }
         products.Add(newProduct);
@@ -92,8 +102,9 @@ public class Bill  {
 
     public void RemoveProduct(Product oldProduct)
     {
-        if(oldProduct != null) {
-            products.Remove( oldProduct );
+        if (oldProduct != null)
+        {
+            products.Remove(oldProduct);
             SetDirty();
         }
     }
@@ -102,29 +113,37 @@ public class Bill  {
     {
         BillState oldState = state;
         state = newState;
-        if(newState != oldState ) {
-            switch ( newState ) {
-                case BillState.None: {
+        if (newState != oldState)
+        {
+            switch (newState)
+            {
+                case BillState.None:
+                {
 
-                        break;
-                    }
-                case BillState.Done: {
+                    break;
+                }
+                case BillState.Done:
+                {
 
-                        break;
-                    }
-                case BillState.Debt: {
+                    break;
+                }
+                case BillState.Debt:
+                {
 
-                        break;
-                    }
-                case BillState.Waiting: {
-                        break;
-                    }
-                case BillState.Cancel: {
-                        break;
-                    }
-                default: {
-                        break;
-                    }
+                    break;
+                }
+                case BillState.Waiting:
+                {
+                    break;
+                }
+                case BillState.Cancel:
+                {
+                    break;
+                }
+                default:
+                {
+                    break;
+                }
             }
         }
     }
@@ -132,8 +151,10 @@ public class Bill  {
     public void CalculatingPrice()
     {
         totalPrice = 0;
-        if ( products != null ) {
-            foreach ( var i in products ) {
+        if (products != null)
+        {
+            foreach (var i in products)
+            {
                 totalPrice += i.TotalPrice;
             }
         }
@@ -146,13 +167,17 @@ public class Bill  {
 
     public static void Transmission(Bill from, Bill to)
     {
-        if ( to == null ) {
+        if (to == null)
+        {
             to = new Bill();
         }
         to.customerName = from.customerName;
-        to.products = from.products;
-        foreach ( var detail in to.products ) {
-            detail.SetBill( to );
+        to.products = new List<Product>();
+        for (int i = 0; i < from.products.Count; ++i)
+        {
+            Product product = new Product(from.products[i]);
+            product.SetBill(to);
+            to.products.Add(product);
         }
         to.state = from.state;
         to.paid = from.paid;

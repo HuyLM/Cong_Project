@@ -3,8 +3,8 @@ using UnityEngine;
 
 
 [Serializable]
-public class Product  {
-
+public class Product
+{
     // primary value
     [SerializeField] private string productName;
     [SerializeField] private int amount;
@@ -14,22 +14,24 @@ public class Product  {
 
     // private value
     private bool isDirty = true;
-     private int totalPrice;
+    private int totalPrice;
 
     // reference value
-    [NonSerialized]private Bill myBill;
+    [NonSerialized] private Bill myBill;
 
 
     public string ProductName { get => productName; set => productName = value; }
-    public int Amount { get => amount;}
+    public int Amount { get => amount; }
     public int UnitPrice { get => unitPrice; }
     public string Note { get => note; set => note = value; }
 
 
     public int TotalPrice
     {
-        get {
-            if(isDirty) {
+        get
+        {
+            if (isDirty)
+            {
                 totalPrice = amount * unitPrice;
                 isDirty = false;
             }
@@ -44,7 +46,6 @@ public class Product  {
         amount = 0;
         unitPrice = 0;
         note = "Không có";
-
     }
 
     public Product(Bill bill)
@@ -54,7 +55,6 @@ public class Product  {
         amount = 0;
         unitPrice = 0;
         note = "Không có";
-
     }
 
     public Product(Product product)
@@ -83,7 +83,7 @@ public class Product  {
         this.myBill = newBill;
     }
 
-    public Bill GetBill( )
+    public Bill GetBill()
     {
         return this.myBill;
     }
@@ -91,7 +91,8 @@ public class Product  {
     public void SetDirty()
     {
         isDirty = true;
-        if(myBill != null ) {
+        if (myBill != null)
+        {
             myBill.SetDirty();
         }
     }
@@ -103,6 +104,7 @@ public class Product  {
         to.unitPrice = from.unitPrice;
         to.myBill = from.myBill;
         to.note = from.note;
+        to.isDirty = from.isDirty;
 
     }
 

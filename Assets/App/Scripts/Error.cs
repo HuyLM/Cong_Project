@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
 
-public class Error : MonoBehaviour {
+public class Error : MonoBehaviour
+{
 }

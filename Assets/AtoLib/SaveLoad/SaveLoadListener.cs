@@ -1,36 +1,55 @@
 ﻿using System;
 using UnityEngine;
-namespace AtoLib {
+using UnityEngine.SceneManagement;
+using TMPro;
+namespace AtoLib
+{
 
-    public class SaveLoadListener : MonoBehaviour {
+    public class SaveLoadListener : MonoBehaviour
+    {
+        [SerializeField] private TextMeshProUGUI txtNote;
         private bool isLoaded;
-        private void Awake() {
+        private async void Awake()
+        {
             DontDestroyOnLoad(this);
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
-            SaveLoad.Load();
+            int result = await GameSaveData.Instance.LoadData();
+            if (result == -1)
+            { // other app is using data
+                txtNote.text = "App khác đang mở";
+                return;
+            }
+            //SaveLoad.Load();
             isLoaded = true;
             CheckDayOpenGame();
+            PopupHUD.Instance.Show<PasswordPopup>();
         }
 
-        private void OnApplicationPause(bool pause) {
-            if (!isLoaded) {
+        private async void OnApplicationPause(bool pause)
+        {
+            if (!isLoaded)
+            {
                 return;
             }
-            if (pause) {
-                SaveLoad.Save();
-                DateTime today = DateTime.Today;
+            if (pause)
+            {
+                //await GameSaveData.Instance.SaveData(false);
+                //SaveLoad.Save();
             }
         }
 
-        private void OnApplicationQuit() {
-            if (!isLoaded) {
+        private async void OnApplicationQuit()
+        {
+            if (!isLoaded)
+            {
                 return;
             }
-            SaveLoad.Save();
-            DateTime today = DateTime.Today;
+            //await GameSaveData.Instance.SaveData(false);
+            // SaveLoad.Save();
         }
 
-        private void CheckDayOpenGame() {
+        private void CheckDayOpenGame()
+        {
 
         }
     }

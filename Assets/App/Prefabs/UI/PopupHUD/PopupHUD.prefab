@@ -99,7 +99,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &5541151654461559148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,20 +118,29 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 1.33
+      time: 0.5
       value: 0
       inSlope: 0
-      outSlope: 1.4925374
-      tangentMode: 0
+      outSlope: 4
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 2
+      time: 0.75
       value: 1
-      inSlope: 1.4925374
+      inSlope: 4
       outSlope: 0
-      tangentMode: 0
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0
+      outSlope: 1.4925374
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -189,4 +198,5 @@ MonoBehaviour:
   order: 0
   defaultFrame: {fileID: 0}
   frames:
-  - {fileID: 3035579286175005531, guid: 5dc9f07162347b84ea18c3b8796b37a2, type: 3}
+  - {fileID: 6634172010735392150, guid: d098dfb7cd37712499325af5eec1d850, type: 3}
+  - {fileID: 4997555683872858451, guid: 2b7c241cb3fce94429e7d2f2882a7dc8, type: 3}

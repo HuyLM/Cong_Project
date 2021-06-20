@@ -2,67 +2,59 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BillList : Singleton<BillList>{
+public class BillList : Singleton<BillList> {
     private readonly string saveKey = "BILL_LIST_SAVE_KEY";
     private List<Bill> bills;
 
-    public List<Bill> Bills { get => bills; }
 
-    protected override void Initialize()
-    {
+    public string SaveKey { get => saveKey; }
+    public List<Bill> Bills { get => bills; set => bills = value; }
+
+    protected override void Initialize() {
         base.Initialize();
         bills = new List<Bill>();
     }
 
-    public void LoadData()
-    {
-        string json = PlayerPrefs.GetString( saveKey );
+    public void LoadData() {
+        string json = PlayerPrefs.GetString(saveKey);
         SaveDataModel saveData = null;
-        if ( !string.IsNullOrEmpty( json ) ) {
-            saveData = JsonUtility.FromJson<SaveDataModel>( json );
+        if (!string.IsNullOrEmpty(json)) {
+            saveData = JsonUtility.FromJson<SaveDataModel>(json);
         }
 
-        if ( saveData == null ) {
+        if (saveData == null) {
             bills = new List<Bill>();
             return;
         }
         bills = new List<Bill>();
-        foreach ( var item in saveData.b ) {
-            bills.Add( item );
+        foreach (var item in saveData.b) {
+            bills.Add(item);
         }
     }
 
-    public void SaveData()
-    {
-        if ( bills == null ) {
+    public void SaveData() {
+        if (bills == null) {
             return;
         }
 
-        SaveDataModel saveData = new SaveDataModel( bills.Count );
+        SaveDataModel saveData = new SaveDataModel(bills.Count);
 
         int index = 0;
-        foreach ( var item in bills ) {
-            saveData.b[ index ] = item;
+        foreach (var item in bills) {
+            saveData.b[index] = item;
             index++;
         }
-        string json = JsonUtility.ToJson( saveData );
-        PlayerPrefs.SetString( saveKey, json );
+        string json = JsonUtility.ToJson(saveData);
+        PlayerPrefs.SetString(saveKey, json);
     }
 
 
     [System.Serializable]
-    private class SaveDataModel
-    {
+    private class SaveDataModel {
         public Bill[] b;
 
-        public SaveDataModel(Bill[] items)
-        {
-            this.b = items;
-        }
-
-        public SaveDataModel(int capacity)
-        {
-            b = new Bill[ capacity ];
+        public SaveDataModel(int capacity) {
+            b = new Bill[capacity];
         }
     }
 }

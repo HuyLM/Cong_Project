@@ -7,7 +7,7 @@ using UnityEngine;
 public class BasePopup : DOTweenFrame
 {
 
-    [Header( "[References]" )]
+    [Header("[References]")]
     [SerializeField] protected TextMeshProUGUI tileText;
     [SerializeField] protected TextMeshProUGUI messageText;
     [SerializeField] protected ButtonBase closeTap;
@@ -20,31 +20,35 @@ public class BasePopup : DOTweenFrame
 
     protected virtual void Start()
     {
-        if ( closeButton ) {
-            closeButton.onClick.AddListener( OnCloseButtonClicked );
+        if (closeButton)
+        {
+            closeButton.onClick.AddListener(OnCloseButtonClicked);
         }
 
-        if ( closeTap ) {
-            closeTap.onClick.AddListener( OnCloseButtonClicked );
+        if (closeTap)
+        {
+            closeTap.onClick.AddListener(OnCloseButtonClicked);
         }
     }
 
     protected override void OnShow(Action onCompleted = null, bool instant = false)
     {
-        base.OnShow( onCompleted, instant );
-        SetTapState( true );
-        SetTile( null, false );
-        SetMessage( null, false );
-        SetCloseContent( null, false );
-        OnClose( null );
-        SetCloseState( true, true );
+        base.OnShow(onCompleted, instant);
+        SetTapState(true);
+        SetTile(null, false);
+        SetMessage(null, false);
+        SetCloseContent(null, false);
+        OnClose(null);
+        SetCloseState(true, true);
     }
 
     public BasePopup SetTile(string tile, bool show = true)
     {
-        if ( this.tileText ) {
-            this.tileText.gameObject.SetActive( show );
-            if ( show ) {
+        if (this.tileText)
+        {
+            this.tileText.gameObject.SetActive(show);
+            if (show)
+            {
                 this.tileText.text = tile;
             }
         }
@@ -53,9 +57,11 @@ public class BasePopup : DOTweenFrame
 
     public BasePopup SetMessage(string message, bool show = true)
     {
-        if ( this.messageText ) {
-            this.messageText.gameObject.SetActive( show );
-            if ( show ) {
+        if (this.messageText)
+        {
+            this.messageText.gameObject.SetActive(show);
+            if (show)
+            {
                 this.messageText.text = message;
             }
         }
@@ -64,9 +70,11 @@ public class BasePopup : DOTweenFrame
 
     public BasePopup SetCloseContent(string content, bool show = true)
     {
-        if ( this.closeText ) {
-            this.closeText?.gameObject.SetActive( show );
-            if ( show ) {
+        if (this.closeText)
+        {
+            this.closeText?.gameObject.SetActive(show);
+            if (show)
+            {
                 this.closeText.text = content;
             }
         }
@@ -87,10 +95,12 @@ public class BasePopup : DOTweenFrame
 
     public BasePopup SetCloseState(bool interactable, bool show = true)
     {
-        if ( closeButton ) {
-            closeButton.gameObject.SetActive( show );
-            if ( show ) {
-                closeButton.SetState( interactable );
+        if (closeButton)
+        {
+            closeButton.gameObject.SetActive(show);
+            if (show)
+            {
+                closeButton.SetState(interactable);
             }
         }
         return this;
@@ -98,31 +108,34 @@ public class BasePopup : DOTweenFrame
 
     protected virtual void OnCloseButtonClicked()
     {
-        SetTapState( false );
-        preCloseAction?.Invoke();
-        Hide();
-        closeAction?.Invoke();
+        Close();
     }
 
     public override Frame OnBack()
     {
-        OnBackButtonClicked();
+        Close();
         return this;
     }
 
-    protected virtual void OnBackButtonClicked()
-    {
-        OnCloseButtonClicked();
-    }
 
     public BasePopup SetTapState(bool interactable, bool show = true)
     {
-        if ( closeTap ) {
-            closeTap.gameObject.SetActive( show );
-            if ( show ) {
-                closeTap.SetState( interactable );
+        if (closeTap)
+        {
+            closeTap.gameObject.SetActive(show);
+            if (show)
+            {
+                closeTap.SetState(interactable);
             }
         }
         return this;
+    }
+
+    protected void Close()
+    {
+        SetTapState(false);
+        preCloseAction?.Invoke();
+        Hide();
+        closeAction?.Invoke();
     }
 }
