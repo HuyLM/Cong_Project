@@ -11,6 +11,7 @@ namespace AtoLib
         private bool isLoaded;
         private async void Awake()
         {
+
             DontDestroyOnLoad(this);
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             int result = await GameSaveData.Instance.LoadData();

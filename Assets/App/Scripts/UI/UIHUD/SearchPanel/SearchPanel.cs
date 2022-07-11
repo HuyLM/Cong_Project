@@ -75,7 +75,7 @@ public class SearchPanel : DOTweenFrame
         results = new List<Bill>();
         foreach (var b in bills)
         {
-            if (b.CustomerName.Equals(curSearchName))
+            if (b.CustomerName.Equals(curSearchName) || curSearchName.Equals("all"))
             {
                 results.Add(b);
             }

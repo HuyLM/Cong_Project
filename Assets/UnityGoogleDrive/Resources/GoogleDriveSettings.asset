@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: GoogleDriveSettings
   m_EditorClassIdentifier: 
   genericClientCredentials:
-    client_id: 294760973660-m41bopdreku5543e9l43cpu5v03k0fak.apps.googleusercontent.com
+    client_id: 294760973660-qfampbnkkv1h6rehmhu24hpn77kv3mrr.apps.googleusercontent.com
     project_id: glass-flux-313811
     auth_uri: https://accounts.google.com/o/oauth2/auth
     token_uri: https://oauth2.googleapis.com/token
     auth_provider_x509_cert_url: https://www.googleapis.com/oauth2/v1/certs
-    client_secret: tAAt9D34E0sqkEDvMQdw7d6p
+    client_secret: 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
     redirect_uris:
     - http://localhost
+    - https://atomi1612.itch.io
   uriSchemeClientCredentials:
     clientId: 294760973660-erc54g720au9saqrhk4bkbf0kq0j38c7.apps.googleusercontent.com
     reversedClientId: com.googleusercontent.apps.294760973660-erc54g720au9saqrhk4bkbf0kq0j38c7
