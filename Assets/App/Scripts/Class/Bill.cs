@@ -171,6 +171,7 @@ public class Bill
         {
             to = new Bill();
         }
+        to.date = from.date;
         to.customerName = from.customerName;
         to.products = new List<Product>();
         for (int i = 0; i < from.products.Count; ++i)

@@ -25,6 +25,7 @@ public class EditBillPanel : DOTweenFrame
 
     private Bill curBill;
     private Bill originBill;
+    private bool isAddNew;
 
     private void Start()
     {
@@ -73,9 +74,11 @@ public class EditBillPanel : DOTweenFrame
         ShowState();
     }
 
-    public void SetOpenBill(Bill bill)
+    public void SetOpenBill(Bill bill, bool isAddNew)
     {
+        this.isAddNew = isAddNew;
         this.originBill = bill;
+        btnDel.SetState(!isAddNew);
         if (curBill == null)
         {
             curBill = new Bill();
@@ -85,10 +88,10 @@ public class EditBillPanel : DOTweenFrame
 
     #region Products
 
-    private void OpenEditProductPopup(Product product)
+    private void OpenEditProductPopup(Product product, bool isAddNewProduct)
     {
         Pause();
-        PopupHUD.Instance.GetFrame<EditProductPopup>().SetOpenProduct(product);
+        PopupHUD.Instance.GetFrame<EditProductPopup>().SetOpenProduct(product, isAddNewProduct);
         PopupHUD.Instance.Show<EditProductPopup>();
     }
 
@@ -99,14 +102,14 @@ public class EditBillPanel : DOTweenFrame
     }
     private void OnSelectProductRow(ProductRowViewDisplayer displayer)
     {
-        OpenEditProductPopup(displayer.Model);
+        OpenEditProductPopup(displayer.Model, false);
     }
 
     private void OnAddProductButtonClicked()
     {
         Product newProduct = new Product(curBill);
-        curBill.AddProduct(newProduct);
-        OpenEditProductPopup(newProduct);
+        //curBill.AddProduct(newProduct);
+        OpenEditProductPopup(newProduct, true);
     }
 
     #endregion
@@ -177,6 +180,10 @@ public class EditBillPanel : DOTweenFrame
         }
         else
         {
+            if (isAddNew)
+            {
+                BillList.Instance.Bills.Add(originBill);
+            }
             await GameSaveData.Instance.SaveData(true);
             Hide();
         }

@@ -19,6 +19,7 @@ public class EditProductPopup : BasePopup
 
     private Product curProduct;
     private Product originProduct;
+    private bool isAddNewProduct;
 
     protected override void Start()
     {
@@ -46,8 +47,10 @@ public class EditProductPopup : BasePopup
         UIHUD.Instance.GetActiveFrame<EditBillPanel>().Refresh();
     }
 
-    public void SetOpenProduct(Product product)
+    public void SetOpenProduct(Product product, bool isAddNewProduct)
     {
+        this.isAddNewProduct = isAddNewProduct;
+        btnDel.SetState(!isAddNewProduct);
         this.originProduct = product;
         if (curProduct == null)
         {
@@ -179,6 +182,10 @@ public class EditProductPopup : BasePopup
         }
         Product.Transmission(curProduct, originProduct);
         originProduct.SetDirty();
+        if (isAddNewProduct)
+        {
+            originProduct.GetBill().AddProduct(originProduct);
+        }
         Hide();
     }
 
