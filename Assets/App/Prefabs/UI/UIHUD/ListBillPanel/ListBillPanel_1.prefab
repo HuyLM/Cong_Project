@@ -3077,7 +3077,7 @@ GameObject:
   - component: {fileID: 6374861620864113897}
   - component: {fileID: 857240388811705986}
   m_Layer: 5
-  m_Name: txtLastModified
+  m_Name: txtName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
