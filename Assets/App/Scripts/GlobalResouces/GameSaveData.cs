@@ -6,7 +6,7 @@ using System.Linq;
 public class GameSaveData : Singleton<GameSaveData>
 {
 
-    private readonly bool useConvertData = true;
+    private readonly bool useConvertData = false;
 
     private readonly string saveKey = "GAME_SAVE_DATA_KEY";
     private readonly string pathFileOnline = "Cong/data";
@@ -35,6 +35,10 @@ public class GameSaveData : Singleton<GameSaveData>
             Debug.LogError("-----SaveData Completed------");
             Debug.LogError(".......Convert Completed");
         }
+        else
+        {
+            result = await LoadDataWithData();
+        }
         LoadingHUD.Instance.Hide<LoadingPanel>();
 
         return result;
@@ -57,6 +61,18 @@ public class GameSaveData : Singleton<GameSaveData>
             NewBill newBill = NewBill.Convert(bill);
             newBill.SetCustomer(searchCustomer);
             searchCustomer.AddBill(newBill);
+        }
+
+        foreach(var c in customers)
+        {
+            c.Bills.Sort(delegate (NewBill x, NewBill y)
+            {
+                if(x.CreateDate.Date.CompareTo(y.CreateDate.Date) == 0)
+                {
+                    return x.DeliveryDate.Date.CompareTo(y.DeliveryDate.Date) * -1;
+                }
+                return x.CreateDate.Date.CompareTo(y.CreateDate.Date) * -1;
+            });
         }
 
         GameData.Instance.Customers = customers;

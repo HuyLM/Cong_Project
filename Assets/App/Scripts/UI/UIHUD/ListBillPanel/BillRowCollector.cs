@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BillRowCollector : CollectionDisplayer<Bill>
+public class BillRowCollector : CollectionDisplayer<NewBill>
 {
     [SerializeField] private BillRowViewDisplayer prefab;
     [SerializeField] private Transform layout;
@@ -43,7 +43,7 @@ public class BillRowCollector : CollectionDisplayer<Bill>
         }
     }
 
-    public BillRowViewDisplayer GetItemView(Bill data)
+    public BillRowViewDisplayer GetItemView(NewBill data)
     {
         foreach ( var displayer in displayers ) {
             if ( displayer.Model == data ) {
@@ -53,7 +53,7 @@ public class BillRowCollector : CollectionDisplayer<Bill>
         return null;
     }
 
-    public void SetupDisplayer(BillRowViewDisplayer displayer, Bill item)
+    public void SetupDisplayer(BillRowViewDisplayer displayer, NewBill item)
     {
         if ( displayer == null ) {
             return;

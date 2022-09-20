@@ -1,23 +1,32 @@
-﻿using AtoLib;
+using AtoLib;
+using AtoLib.Helper;
 using AtoLib.UI;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
-using TMPro;
-using AtoLib.Helper;
 
-public class SearchPanel : DOTweenFrame
+public class ListCustomerPanel : DOTweenFrame
 {
     [SerializeField] private AutoCompleteComboBox cbName;
-    [SerializeField] private BillRowCollector billRowCollector;
+    [SerializeField] private CustomerRowCollector customerRowCollector;
     [SerializeField] private ButtonBase btnBack;
     [SerializeField] private TextMeshProUGUI txtTotalPrice;
     [SerializeField] private TextMeshProUGUI txtTotalPaid;
     [SerializeField] private TextMeshProUGUI txtTotalDebt;
 
     private string curSearchName;
-    private List<Bill> results;
+    private List<NewCustomer> results;
+
+    private void Start()
+    {
+        results = new List<NewCustomer>();
+        btnBack.onClick.AddListener(OnBackButtonClicked);
+        cbName.OnSelectionChanged.AddListener(OnNameSelectionChanged);
+    }
+
 
     protected override void OnShow(Action onCompleted = null, bool instant = false)
     {
@@ -25,70 +34,65 @@ public class SearchPanel : DOTweenFrame
         curSearchName = string.Empty;
         cbName.InputComponent.text = string.Empty;
 
-        ShowBills();
+        ShowCustomers();
         ShowNameCombox();
     }
 
     protected override void OnResume(Action onCompleted = null, bool instant = false)
     {
         base.OnResume(onCompleted, instant);
-        ShowBills();
+        ShowCustomers();
         ShowNameCombox();
-    }
-
-    private void Start()
-    {
-        results = new List<Bill>();
-        btnBack.onClick.AddListener(OnBackButtonClicked);
-        cbName.OnSelectionChanged.AddListener(OnNameSelectionChanged);
     }
 
     private void ShowNameCombox()
     {
-        List<Bill> bills = BillList.Instance.Bills;
-        List<string> allName = new List<string>();
-        foreach (var b in bills)
+        List<NewCustomer> customers = GameData.Instance.Customers;
+        List<string> availiableNames = new List<string>();
+        foreach (var b in customers)
         {
-            if (!allName.Contains(b.CustomerName))
+            if (!availiableNames.Contains(b.CustomerName))
             {
-                allName.Add(b.CustomerName);
+                availiableNames.Add(b.CustomerName);
             }
         }
-        cbName.SetAvailableOptions(allName);
+        cbName.SetAvailableOptions(availiableNames);
         cbName.ItemsToDisplay = 5;
 
     }
 
-
-    private void OpenEditBillPanel(Bill bill)
+    private void OpenListBill(NewCustomer customer)
     {
         //Hide();
         Pause();
-        EditBillPanel editBillPanel = UIHUD.Instance.GetFrame<EditBillPanel>();
-        //editBillPanel.SetOpenBill(bill, false);
-        UIHUD.Instance.Show<EditBillPanel>();
+
+        Pause();
+        ListBillPanel listBillPanel = UIHUD.Instance.GetFrame<ListBillPanel>();
+        listBillPanel.SetCustomer(customer, false);
+        UIHUD.Instance.Show<ListBillPanel>();
     }
 
-    private void ShowBills()
+    private void ShowCustomers()
     {
-        List<Bill> bills = BillList.Instance.Bills;
-        results = new List<Bill>();
-        foreach (var b in bills)
+        List<NewCustomer> customers = GameData.Instance.Customers;
+        results = new List<NewCustomer>();
+        foreach (var b in customers)
         {
-            if (b.CustomerName.Equals(curSearchName) || curSearchName.Equals("all"))
+            if (string.IsNullOrEmpty(curSearchName) || b.CustomerName.Equals(curSearchName) || curSearchName.Equals("all"))
             {
                 results.Add(b);
             }
         }
-        //billRowCollector.AddOnSelect(OnSelectBillRow).SetCapacity(results.Count).SetItems(results).Show();
+        customerRowCollector.AddOnSelect(OnSelectCustomerRow).SetCapacity(results.Count).SetItems(results).Show();
+        return;
         ShowTotalPrice();
         ShowTotalPaid();
         ShowTotalDebt();
     }
 
-    private void OnSelectBillRow(BillRowViewDisplayer displayer)
+    private void OnSelectCustomerRow(CustomerRowDisplayer displayer)
     {
-        //OpenEditBillPanel(displayer.Model);
+        OpenListBill(displayer.Model);
     }
 
     private void OnBackButtonClicked()
@@ -101,7 +105,7 @@ public class SearchPanel : DOTweenFrame
         curSearchName = text;
         if (isSelect)
         {
-            ShowBills();
+            ShowCustomers();
         }
     }
 

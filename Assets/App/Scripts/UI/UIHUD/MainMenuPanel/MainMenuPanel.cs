@@ -34,7 +34,7 @@ public class MainMenuPanel : DOTweenFrame
 
     private void OnListButtonClicked()
     {
-        UIHUD.Instance.Show<ListBillPanel>();
+        UIHUD.Instance.Show<ListCustomerPanel>();
     }
 
     private void OnSearchButtonClicked()

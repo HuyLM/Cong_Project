@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProductRowCollector : CollectionDisplayer<Product>
+public class ProductRowCollector : CollectionDisplayer<NewProduct>
 {
     [SerializeField] private ProductRowViewDisplayer prefab;
     [SerializeField] private Transform layout;
@@ -43,7 +43,7 @@ public class ProductRowCollector : CollectionDisplayer<Product>
         }
     }
 
-    public ProductRowViewDisplayer GetItemView(Product data)
+    public ProductRowViewDisplayer GetItemView(NewProduct data)
     {
         foreach ( var displayer in displayers ) {
             if ( displayer.Model == data ) {
@@ -53,7 +53,7 @@ public class ProductRowCollector : CollectionDisplayer<Product>
         return null;
     }
 
-    public void SetupDisplayer(ProductRowViewDisplayer displayer, Product item)
+    public void SetupDisplayer(ProductRowViewDisplayer displayer, NewProduct item)
     {
         if ( displayer == null ) {
             return;

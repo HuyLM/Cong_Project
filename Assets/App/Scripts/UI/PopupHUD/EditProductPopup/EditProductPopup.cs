@@ -17,8 +17,8 @@ public class EditProductPopup : BasePopup
     [SerializeField] private ButtonBase btnDel;
     [SerializeField] private ButtonBase btnCancel;
 
-    private Product curProduct;
-    private Product originProduct;
+    private NewProduct curProduct;
+    private NewProduct originProduct;
     private bool isAddNewProduct;
 
     protected override void Start()
@@ -47,16 +47,16 @@ public class EditProductPopup : BasePopup
         UIHUD.Instance.GetActiveFrame<EditBillPanel>().Refresh();
     }
 
-    public void SetOpenProduct(Product product, bool isAddNewProduct)
+    public void SetOpenProduct(NewProduct product, bool isAddNewProduct)
     {
         this.isAddNewProduct = isAddNewProduct;
         btnDel.SetState(!isAddNewProduct);
         this.originProduct = product;
         if (curProduct == null)
         {
-            curProduct = new Product();
+            curProduct = new NewProduct();
         }
-        Product.Transmission(originProduct, curProduct);
+        NewProduct.Transmission(originProduct, curProduct);
     }
 
     #region ShowUI
@@ -178,9 +178,9 @@ public class EditProductPopup : BasePopup
     {
         if (curProduct == null)
         {
-            curProduct = new Product();
+            curProduct = new NewProduct();
         }
-        Product.Transmission(curProduct, originProduct);
+        NewProduct.Transmission(curProduct, originProduct);
         originProduct.SetDirty();
         if (isAddNewProduct)
         {
@@ -191,7 +191,7 @@ public class EditProductPopup : BasePopup
 
     private void OnDeleteButtonClicked()
     {
-        Bill bill = originProduct.GetBill();
+        NewBill bill = originProduct.GetBill();
         if (bill != null)
         {
             bill.RemoveProduct(originProduct);

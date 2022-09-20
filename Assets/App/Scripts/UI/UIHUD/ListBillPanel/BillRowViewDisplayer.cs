@@ -5,12 +5,12 @@ using TMPro;
 using System;
 using AtoLib.Helper;
 
-public class BillRowViewDisplayer : ViewDisplayer<Bill>
+public class BillRowViewDisplayer : ViewDisplayer<NewBill>
 {
     [SerializeField] private Image imgState;
     [SerializeField] private TextMeshProUGUI txtNumber;
-    [SerializeField] private TextMeshProUGUI txtDate;
-    [SerializeField] private TextMeshProUGUI txtName;
+    [SerializeField] private TextMeshProUGUI txtCreateDate;
+    [SerializeField] private TextMeshProUGUI txtDeliveryDate;
     [SerializeField] private TextMeshProUGUI txtTotalPrice;
     [SerializeField] private ButtonBase btnSelect;
 
@@ -20,15 +20,15 @@ public class BillRowViewDisplayer : ViewDisplayer<Bill>
 
     private void Start()
     {
-        btnSelect.onClick.AddListener( OnSelectButtonClicked );
+        btnSelect.onClick.AddListener(OnSelectButtonClicked);
     }
 
     public override void Show()
     {
         ShowStateColor();
         ShowNumberText();
-        ShowDateText();
-        ShowNameText();
+        ShowCreateDateText();
+        ShowDeliveryDateText();
         ShowTotalPriceText();
     }
 
@@ -44,7 +44,7 @@ public class BillRowViewDisplayer : ViewDisplayer<Bill>
 
     private void ShowStateColor()
     {
-        imgState.color = GlobalResouces.Instance.UIConfigResource.GetBillColor( Model.State );
+        imgState.color = GlobalResouces.Instance.UIConfigResource.GetBillColor( Model.IsDone ? BillState.Done : BillState.Debt );
     }
 
     private void ShowNumberText()
@@ -52,14 +52,13 @@ public class BillRowViewDisplayer : ViewDisplayer<Bill>
         txtNumber.text = number.ToString();
     }
 
-    private void ShowDateText()
+    private void ShowCreateDateText()
     {
-        txtDate.text = Model.Date.ToString( "dd/MM/yyyy" );
+        txtCreateDate.text = Model.CreateDate.ToString( "dd/MM/yyyy" );
     }
-
-    private void ShowNameText()
+    private void ShowDeliveryDateText()
     {
-        txtName.text = Model.CustomerName;
+        txtDeliveryDate.text = Model.DeliveryDate.ToString( "dd/MM/yyyy" );
     }
 
     private void ShowTotalPriceText()

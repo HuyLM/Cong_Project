@@ -67,6 +67,35 @@ public class NewCustomer
         customerName = "Cong ocho";
     }
 
+    public bool AddPaid(int addPaid)
+    {
+        if(Paid + addPaid > TotalPrice)
+        {
+            return false;
+        }
+        else if(Paid - addPaid < 0)
+        {
+            return false;
+        }
+        for(int i = 0; i < Bills.Count; ++i)
+        {
+            NewBill bill = Bills[i];
+            if(bill.IsDone)
+            {
+                continue;
+            }
+            int debt = bill.Debt;
+            if(debt >= addPaid)
+            {
+                bill.AddPaid(addPaid);
+                return true;
+            }
+            bill.AddPaid(debt);
+            addPaid -= debt;
+        }
+        return true;
+    }
+
     public NewBill AddBill(NewBill newBill = null)
     {
         if (newBill == null)
@@ -97,6 +126,7 @@ public class NewCustomer
             foreach (var i in bills)
             {
                 totalPrice += i.TotalPrice;
+                paid += i.Paid;
             }
         }
     }
@@ -112,6 +142,7 @@ public class NewCustomer
             to = new NewCustomer();
         }
         to.lastModifiedDate = from.lastModifiedDate;
+        to.CustomerName = from.CustomerName;
         to.bills = new List<NewBill>();
         for (int i = 0; i < from.bills.Count; ++i)
         {

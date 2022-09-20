@@ -50,6 +50,13 @@ public class NewBill
             return totalPrice - paid;
         }
     }
+    public bool IsDone
+    {
+        get {
+            return Paid == TotalPrice;
+        }
+    }
+
     public NewCustomer Customer { get => customer; }
 
     public NewBill()
@@ -70,6 +77,8 @@ public class NewBill
         }
         customer = from.customer;
         paid = from.paid;
+        createDate = from.createDate;
+        deliveryDate = from.deliveryDate;
         isDirty = true;
     }
 
@@ -81,6 +90,21 @@ public class NewBill
     public void SetPaid(int newPaid)
     {
         this.paid = newPaid;
+        SetDirty();
+    }
+
+    public void AddPaid(int addPaid)
+    {
+        if (Paid + addPaid > TotalPrice)
+        {
+            return;
+        }
+        else if (Paid - addPaid < 0)
+        {
+            return;
+        }
+        paid += addPaid;
+        SetDirty();
     }
 
     public NewProduct AddProduct(NewProduct newProduct = null)
@@ -137,6 +161,7 @@ public class NewBill
         }
         to.paid = from.paid;
         to.isDirty = true;
+        to.SetCustomer(from.Customer);
     }
 
     public static NewBill Convert(Bill oldBill)

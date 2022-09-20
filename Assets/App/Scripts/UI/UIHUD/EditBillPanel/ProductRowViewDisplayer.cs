@@ -4,7 +4,7 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 
-public class ProductRowViewDisplayer : ViewDisplayer<Product> {
+public class ProductRowViewDisplayer : ViewDisplayer<NewProduct> {
     [SerializeField] private TextMeshProUGUI txtNumber;
     [SerializeField] private TextMeshProUGUI txtName;
     [SerializeField] private TextMeshProUGUI txtNote;
@@ -43,26 +43,32 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product> {
     }
 
     private void ShowUnitPrice() {
+        if(txtUnitPrice != null)
         txtUnitPrice.text = System.String.Format("{0:N0}", Model.UnitPrice);
     }
 
     private void ShowNumberText() {
-        txtNumber.text = number.ToString();
+        if (txtNumber != null)
+            txtNumber.text = number.ToString();
     }
 
     private void ShowAmountText() {
-        txtAmount.text = Model.Amount.ToString("D3");
+        if (txtAmount != null)
+            txtAmount.text = Model.Amount.ToString("D3");
     }
 
     private void ShowNameText() {
-        txtName.text = Model.ProductName;
+        if (txtName != null)
+            txtName.text = Model.ProductName;
     }
 
     private void ShowTotalPriceText() {
-        txtTotalPrice.text = System.String.Format("{0:N0}", Model.TotalPrice);
+        if (txtTotalPrice != null)
+            txtTotalPrice.text = System.String.Format("{0:N0}", Model.TotalPrice);
     }
 
     private void ShowBackgroundColor() {
+        if (imgBackground == null) return;
         if (number % 2 == 0) {
             imgBackground.color = color1;
         } else {
@@ -71,6 +77,7 @@ public class ProductRowViewDisplayer : ViewDisplayer<Product> {
     }
 
     private void ShowNoteText() {
+        if (txtNote == null) return;
         txtNote.text = Model.Note;
     }
 

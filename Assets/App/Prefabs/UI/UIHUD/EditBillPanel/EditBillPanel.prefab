@@ -3287,7 +3287,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &391674031171245494
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3345,18 +3345,15 @@ MonoBehaviour:
   hideAnimation: {fileID: 0}
   pauseAnimation: {fileID: 0}
   resumeAnimation: {fileID: 0}
+  txtName: {fileID: 0}
+  txtCreateDate: {fileID: 0}
+  txtDeliveryDate: {fileID: 0}
   productRowCollector: {fileID: 4808325580371680482}
-  txtDate: {fileID: 391674030811628252}
-  cbName: {fileID: 8304482667723608101}
-  ddState: {fileID: 7874094851776595497}
   txtTotalPrice: {fileID: 391674032105501674}
-  ipPaid: {fileID: 317854716259520820}
+  ipPaid: {fileID: 0}
   txtDebt: {fileID: 391674030169630626}
   btnSave: {fileID: 4348328806041360111}
   btnCancel: {fileID: 919025720662263224}
-  btnUndo: {fileID: 4520542577588165548}
-  btnDel: {fileID: 8335600876148869836}
-  btnAddProduct: {fileID: 2049104261112949632}
 --- !u!1 &391674031215866427
 GameObject:
   m_ObjectHideFlags: 0
