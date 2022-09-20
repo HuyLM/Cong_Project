@@ -22,7 +22,7 @@ public class NewCustomer
 
 
     public DateTime LastModifiedDate { get => lastModifiedDate; set => lastModifiedDate = value; }
-    public string CustomerName { get => customerName; set => customerName = value; }
+    public string CustomerName { get => customerName; private set => customerName = value; }
     public List<NewBill> Bills { get => bills; }
     public int Paid {
         get
@@ -67,6 +67,12 @@ public class NewCustomer
         customerName = "Cong ocho";
     }
 
+    public void SetName(string name)
+    {
+        CustomerName = name;
+        LastModifiedDate = DateTime.Now;
+    }
+
     public bool AddPaid(int addPaid)
     {
         if(Paid + addPaid > TotalPrice)
@@ -93,6 +99,7 @@ public class NewCustomer
             bill.AddPaid(debt);
             addPaid -= debt;
         }
+        LastModifiedDate = DateTime.Now;
         return true;
     }
 
@@ -105,6 +112,7 @@ public class NewCustomer
         }
         bills.Add(newBill);
         SetDirty();
+        LastModifiedDate = DateTime.Now;
         return newBill;
     }
 
@@ -114,6 +122,7 @@ public class NewCustomer
         {
             bills.Remove(oldBill);
             SetDirty();
+            LastModifiedDate = DateTime.Now;
         }
     }
 
@@ -141,7 +150,7 @@ public class NewCustomer
         {
             to = new NewCustomer();
         }
-        to.lastModifiedDate = from.lastModifiedDate;
+        to.LastModifiedDate = DateTime.Now;
         to.CustomerName = from.CustomerName;
         to.bills = new List<NewBill>();
         for (int i = 0; i < from.bills.Count; ++i)

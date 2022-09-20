@@ -55,7 +55,7 @@ public class GameSaveData : Singleton<GameSaveData>
             if(searchCustomer == null)
             {
                 searchCustomer = new NewCustomer();
-                searchCustomer.CustomerName = bill.CustomerName;
+                searchCustomer.SetName(bill.CustomerName);
                 customers.Add(searchCustomer);
             }
             NewBill newBill = NewBill.Convert(bill);
@@ -178,6 +178,10 @@ public class GameSaveData : Singleton<GameSaveData>
     {
         LoadingHUD.Instance.Show<LoadingPanel>();
         List<NewCustomer> customers = GameData.Instance.Customers;
+        customers.Sort(delegate (NewCustomer x, NewCustomer y)
+        {
+            return x.LastModifiedDate.CompareTo(y.LastModifiedDate) * -1;
+        });
         SaveDataModel saveData = new SaveDataModel(customers.Count);
         saveData.password = password;
         saveData.isUsing = false;//isUsing;

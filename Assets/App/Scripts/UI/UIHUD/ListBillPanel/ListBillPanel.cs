@@ -118,7 +118,7 @@ public class ListBillPanel : DOTweenFrame
 
     private void OnNameInputEndEdit(string text)
     {
-        curCustomer.CustomerName = text;
+        curCustomer.SetName(text);
     }
 
     #region Total, Debt, Paid
