@@ -20,6 +20,7 @@ public class EditBillPanel : DOTweenFrame
     [SerializeField] private TextMeshProUGUI txtDebt;
     [SerializeField] private ButtonBase btnSave;
     [SerializeField] private ButtonBase btnCancel;
+    [SerializeField] private ButtonBase btnChooseDelivery;
 
     private NewBill curBill;
     private NewBill originBill;
@@ -30,6 +31,7 @@ public class EditBillPanel : DOTweenFrame
     {
         btnSave.onClick.AddListener(OnSaveButtonClicked);
         btnCancel.onClick.AddListener(OnCancelButtonClicked);
+        btnChooseDelivery.onClick.AddListener(OnChooseDeliveryButtonClicked);
     }
     protected override void OnShow(Action onCompleted = null, bool instant = false)
     {
@@ -41,6 +43,12 @@ public class EditBillPanel : DOTweenFrame
     {
         base.OnResume(onCompleted, instant);
         ShowUI();
+    }
+
+    protected override void OnHide(Action onCompleted = null, bool instant = false)
+    {
+        base.OnHide(onCompleted, instant);
+        UIHUD.Instance.GetActiveFrame<ListBillPanel>().Refresh();
     }
 
     public void Refresh()
@@ -121,26 +129,19 @@ public class EditBillPanel : DOTweenFrame
     #endregion
 
     #region Buttons
-    private async void OnSaveButtonClicked()
+    private void OnSaveButtonClicked()
     {
         if (curBill == null)
         {
             curBill = new NewBill();
         }
         NewBill.Transmission(curBill, originBill);
-        if (Application.internetReachability == NetworkReachability.NotReachable)
+        originBill.SetDirty();
+        if (isAddNew)
         {
-            Debug.Log("Error. Check internet connection!");
+            curBill.Customer.AddBill(originBill);
         }
-        else
-        {
-            if (isAddNew)
-            {
-                curBill.Customer.AddBill(curBill);
-            }
-            await GameSaveData.Instance.SaveData(true);
-            Hide();
-        }
+        Hide();
     }
 
     private void OnCancelButtonClicked()
@@ -148,26 +149,26 @@ public class EditBillPanel : DOTweenFrame
         Hide();
     }
 
-    private async void OnDeleteButtonClicked()
+    private void OnDeleteButtonClicked()
     {
         ConfirmPopup confirmPopup = PopupHUD.Instance.Show<ConfirmPopup>();
         confirmPopup.SetTile(null, false);
         confirmPopup.SetMessage("Bạn có muốn xoá không?");
         confirmPopup.SetConfirmText("Xoá");
         confirmPopup.SetCancelText("Thoát");
-        confirmPopup.SetOnConfirm(async () =>
+        confirmPopup.SetOnConfirm(() =>
         {
-          
             originBill.Customer.RemoveBill(originBill);
-            if (Application.internetReachability == NetworkReachability.NotReachable)
-            {
-                Debug.Log("Error. Check internet connection!");
-            }
-            else
-            {
-                await GameSaveData.Instance.SaveData(true);
-                Hide();
-            }
+            Hide();
+        });
+    }
+
+    private void OnChooseDeliveryButtonClicked()
+    {
+       ChooseDateTimePopup chooseDateTimePopup =  PopupHUD.Instance.Show<ChooseDateTimePopup>().SetDateTime(curBill.DeliveryDate);
+        chooseDateTimePopup.SetOnConfirm((dateTimeString, dateTime) => {
+            curBill.DeliveryDate = dateTime;
+            ShowUI();
         });
     }
     #endregion

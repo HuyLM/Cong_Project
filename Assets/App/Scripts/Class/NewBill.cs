@@ -142,6 +142,10 @@ public class NewBill
     public void SetDirty()
     {
         isDirty = true;
+        if(customer != null)
+        {
+            customer.SetDirty();
+        }
     }
 
     public static void Transmission(NewBill from, NewBill to)

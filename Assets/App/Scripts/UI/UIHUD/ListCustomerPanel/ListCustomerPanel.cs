@@ -84,10 +84,6 @@ public class ListCustomerPanel : DOTweenFrame
             }
         }
         customerRowCollector.AddOnSelect(OnSelectCustomerRow).SetCapacity(results.Count).SetItems(results).Show();
-        return;
-        ShowTotalPrice();
-        ShowTotalPaid();
-        ShowTotalDebt();
     }
 
     private void OnSelectCustomerRow(CustomerRowDisplayer displayer)

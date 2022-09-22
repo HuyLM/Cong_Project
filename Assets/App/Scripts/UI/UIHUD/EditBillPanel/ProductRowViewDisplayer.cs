@@ -54,7 +54,7 @@ public class ProductRowViewDisplayer : ViewDisplayer<NewProduct> {
 
     private void ShowAmountText() {
         if (txtAmount != null)
-            txtAmount.text = Model.Amount.ToString("D3");
+            txtAmount.text = Model.Amount.ToString("D3") + " x " + System.String.Format("{0:N0}", Model.UnitPrice);
     }
 
     private void ShowNameText() {

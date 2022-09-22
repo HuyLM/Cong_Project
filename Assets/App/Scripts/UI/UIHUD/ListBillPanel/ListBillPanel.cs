@@ -40,6 +40,11 @@ public class ListBillPanel : DOTweenFrame
         ipName.onEndEdit.AddListener(OnNameInputEndEdit);
     }
 
+    public void Refresh()
+    {
+        Show();
+    }
+
     private void Show()
     {
         ShowBills();
