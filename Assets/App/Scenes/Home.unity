@@ -534,7 +534,7 @@ PrefabInstance:
     - target: {fileID: 7123178112692080564, guid: 1f80a996850022044a2ea947d322b46c,
         type: 3}
       propertyPath: frames.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7123178112692080564, guid: 1f80a996850022044a2ea947d322b46c,
         type: 3}
@@ -559,6 +559,12 @@ PrefabInstance:
       propertyPath: frames.Array.data[4]
       value: 
       objectReference: {fileID: 3287589166922712637, guid: b845a8d632e16274a9a18ef36d536a4f,
+        type: 3}
+    - target: {fileID: 7123178112692080564, guid: 1f80a996850022044a2ea947d322b46c,
+        type: 3}
+      propertyPath: frames.Array.data[5]
+      value: 
+      objectReference: {fileID: 3934561257745775213, guid: b7cb44bb57cd189419eea45f541dedb1,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f80a996850022044a2ea947d322b46c, type: 3}

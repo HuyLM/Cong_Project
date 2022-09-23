@@ -3,6 +3,7 @@ using AtoLib.UI;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BasePopup : DOTweenFrame
 {
@@ -10,8 +11,8 @@ public class BasePopup : DOTweenFrame
     [Header("[References]")]
     [SerializeField] protected TextMeshProUGUI tileText;
     [SerializeField] protected TextMeshProUGUI messageText;
-    [SerializeField] protected ButtonBase closeTap;
-    [SerializeField] protected ButtonBase closeButton;
+    [SerializeField] protected Button closeTap;
+    [SerializeField] protected Button closeButton;
     [SerializeField] protected TextMeshProUGUI closeText;
 
     protected Action closeAction;
@@ -100,7 +101,7 @@ public class BasePopup : DOTweenFrame
             closeButton.gameObject.SetActive(show);
             if (show)
             {
-                closeButton.SetState(interactable);
+                closeButton.interactable = (interactable);
             }
         }
         return this;
@@ -125,7 +126,7 @@ public class BasePopup : DOTweenFrame
             closeTap.gameObject.SetActive(show);
             if (show)
             {
-                closeTap.SetState(interactable);
+                closeTap.interactable = (interactable);
             }
         }
         return this;

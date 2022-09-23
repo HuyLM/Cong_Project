@@ -7,6 +7,7 @@ using UnityEngine.UI.Extensions;
 using TMPro;
 using AtoLib;
 using AtoLib.Helper;
+using UnityEngine.UI;
 
 public class EditBillPanel : DOTweenFrame
 {
@@ -21,17 +22,27 @@ public class EditBillPanel : DOTweenFrame
     [SerializeField] private ButtonBase btnSave;
     [SerializeField] private ButtonBase btnCancel;
     [SerializeField] private ButtonBase btnChooseDelivery;
+    [SerializeField] private ButtonBase btnOption;
 
     private NewBill curBill;
     private NewBill originBill;
     private bool isAddNew;
     private bool canDelete;
 
+    private OptionSelect[] options;
+
     private void Start()
     {
         btnSave.onClick.AddListener(OnSaveButtonClicked);
         btnCancel.onClick.AddListener(OnCancelButtonClicked);
         btnChooseDelivery.onClick.AddListener(OnChooseDeliveryButtonClicked);
+        btnOption.onClick.AddListener(OnOptionSelectButtonClicked);
+
+        options = new OptionSelect[] {
+            new OptionSelect(){ Text = "Thêm mới",  OnSelect = AddNew},
+            new OptionSelect(){ Text = "Sửa thanh toán",  OnSelect = EditPaid},
+            new OptionSelect(){ Text = "Bỏ thay đổi",  OnSelect = Undo},
+        };
     }
     protected override void OnShow(Action onCompleted = null, bool instant = false)
     {
@@ -171,6 +182,14 @@ public class EditBillPanel : DOTweenFrame
             ShowUI();
         });
     }
+
+    private void OnOptionSelectButtonClicked()
+    {
+        OptionPopup optionPopup = PopupHUD.Instance.GetFrame<OptionPopup>();
+        optionPopup.SetOptions(options);
+        PopupHUD.Instance.Show<OptionPopup>();
+    }
+
     #endregion
 
     #region Total, Debt, Paid
@@ -218,5 +237,24 @@ public class EditBillPanel : DOTweenFrame
         }
         ShowUI();
     }
+    #endregion
+
+    #region Options
+
+    private void AddNew()
+    {
+        Debug.LogError("Add New");
+    }
+
+    private void EditPaid()
+    {
+        Debug.LogError("EditPaid");
+    }
+
+    private void Undo()
+    {
+        Debug.LogError("Undo");
+    }
+
     #endregion
 }
