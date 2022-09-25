@@ -42,6 +42,8 @@ public class EditBillPanel : DOTweenFrame
             new OptionSelect(){ Text = "Thêm mới",  OnSelect = AddNew},
             new OptionSelect(){ Text = "Sửa thanh toán",  OnSelect = EditPaid},
             new OptionSelect(){ Text = "Bỏ thay đổi",  OnSelect = Undo},
+            new OptionSelect(){ Text = "Lưu",  OnSelect = Save},
+            new OptionSelect(){ Text = "Xóa",  OnSelect = Delete},
         };
     }
     protected override void OnShow(Action onCompleted = null, bool instant = false)
@@ -142,36 +144,12 @@ public class EditBillPanel : DOTweenFrame
     #region Buttons
     private void OnSaveButtonClicked()
     {
-        if (curBill == null)
-        {
-            curBill = new NewBill();
-        }
-        NewBill.Transmission(curBill, originBill);
-        originBill.SetDirty();
-        if (isAddNew)
-        {
-            curBill.Customer.AddBill(originBill);
-        }
-        Hide();
+        Save();
     }
 
     private void OnCancelButtonClicked()
     {
         Hide();
-    }
-
-    private void OnDeleteButtonClicked()
-    {
-        ConfirmPopup confirmPopup = PopupHUD.Instance.Show<ConfirmPopup>();
-        confirmPopup.SetTile(null, false);
-        confirmPopup.SetMessage("Bạn có muốn xoá không?");
-        confirmPopup.SetConfirmText("Xoá");
-        confirmPopup.SetCancelText("Thoát");
-        confirmPopup.SetOnConfirm(() =>
-        {
-            originBill.Customer.RemoveBill(originBill);
-            Hide();
-        });
     }
 
     private void OnChooseDeliveryButtonClicked()
@@ -254,6 +232,35 @@ public class EditBillPanel : DOTweenFrame
     private void Undo()
     {
         Debug.LogError("Undo");
+    }
+
+    private void Save()
+    {
+        if (curBill == null)
+        {
+            curBill = new NewBill();
+        }
+        NewBill.Transmission(curBill, originBill);
+        originBill.SetDirty();
+        if (isAddNew)
+        {
+            curBill.Customer.AddBill(originBill);
+        }
+        Hide();
+    }
+
+    private void Delete()
+    {
+        ConfirmPopup confirmPopup = PopupHUD.Instance.Show<ConfirmPopup>();
+        confirmPopup.SetTile(null, false);
+        confirmPopup.SetMessage("Bạn có muốn xoá không?");
+        confirmPopup.SetConfirmText("Xoá");
+        confirmPopup.SetCancelText("Thoát");
+        confirmPopup.SetOnConfirm(() =>
+        {
+            originBill.Customer.RemoveBill(originBill);
+            Hide();
+        });
     }
 
     #endregion
