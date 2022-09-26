@@ -41,6 +41,7 @@ public class EditBillPanel : DOTweenFrame
         options = new OptionSelect[] {
             new OptionSelect(){ Text = "Thêm mới",  OnSelect = AddNew},
             new OptionSelect(){ Text = "Sửa thanh toán",  OnSelect = EditPaid},
+            new OptionSelect(){ Text = "Thêm thanh toán mới",  OnSelect = AddPaid},
             new OptionSelect(){ Text = "Bỏ thay đổi",  OnSelect = Undo},
             new OptionSelect(){ Text = "Lưu",  OnSelect = Save},
             new OptionSelect(){ Text = "Xóa",  OnSelect = Delete},
@@ -111,12 +112,6 @@ public class EditBillPanel : DOTweenFrame
         OpenEditProductPopup(displayer.Model, false);
     }
 
-    private void OnAddProductButtonClicked()
-    {
-        NewProduct newProduct = new NewProduct(curBill);
-        //curBill.AddProduct(newProduct);
-        OpenEditProductPopup(newProduct, true);
-    }
 
     #endregion
 
@@ -221,17 +216,36 @@ public class EditBillPanel : DOTweenFrame
 
     private void AddNew()
     {
-        Debug.LogError("Add New");
+        NewProduct newProduct = new NewProduct(curBill);
+        OpenEditProductPopup(newProduct, true);
     }
 
     private void EditPaid()
     {
-        Debug.LogError("EditPaid");
+        InputNumberPopup inputNumberPopup = PopupHUD.Instance.Show<InputNumberPopup>();
+        inputNumberPopup.SetTile("Sửa thanh toán");
+        inputNumberPopup.SetNumber(curBill.Paid, 0 , curBill.TotalPrice);
+        inputNumberPopup.SetOnConfirm(()=> {
+            curBill.SetPaid(inputNumberPopup.number);
+            ShowUI();
+        });
+    }
+
+    private void AddPaid()
+    {
+        InputNumberPopup inputNumberPopup = PopupHUD.Instance.Show<InputNumberPopup>();
+        inputNumberPopup.SetTile("Thêm thanh toán mới");
+        inputNumberPopup.SetNumber(curBill.Debt, 0, curBill.Debt);
+        inputNumberPopup.SetOnConfirm(() => {
+            curBill.AddPaid(inputNumberPopup.number);
+            ShowUI();
+        });
     }
 
     private void Undo()
     {
-        Debug.LogError("Undo");
+        NewBill.Transmission(originBill, curBill);
+        Refresh();
     }
 
     private void Save()
@@ -251,16 +265,23 @@ public class EditBillPanel : DOTweenFrame
 
     private void Delete()
     {
-        ConfirmPopup confirmPopup = PopupHUD.Instance.Show<ConfirmPopup>();
-        confirmPopup.SetTile(null, false);
-        confirmPopup.SetMessage("Bạn có muốn xoá không?");
-        confirmPopup.SetConfirmText("Xoá");
-        confirmPopup.SetCancelText("Thoát");
-        confirmPopup.SetOnConfirm(() =>
+        if(canDelete)
         {
-            originBill.Customer.RemoveBill(originBill);
+            ConfirmPopup confirmPopup = PopupHUD.Instance.Show<ConfirmPopup>();
+            confirmPopup.SetTile(null, false);
+            confirmPopup.SetMessage("Bạn có muốn xoá không?");
+            confirmPopup.SetConfirmText("Xoá");
+            confirmPopup.SetCancelText("Thoát");
+            confirmPopup.SetOnConfirm(() =>
+            {
+                originBill.Customer.RemoveBill(originBill);
+                Hide();
+            });
+        }
+        else
+        {
             Hide();
-        });
+        }
     }
 
     #endregion

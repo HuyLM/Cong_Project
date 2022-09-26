@@ -99,7 +99,7 @@ public class NewBill
         {
             return;
         }
-        else if (Paid - addPaid < 0)
+        else if (Debt - addPaid < 0)
         {
             return;
         }
