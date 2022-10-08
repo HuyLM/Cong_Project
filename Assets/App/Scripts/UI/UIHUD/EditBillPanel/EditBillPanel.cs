@@ -255,11 +255,11 @@ public class EditBillPanel : DOTweenFrame
             curBill = new NewBill();
         }
         NewBill.Transmission(curBill, originBill);
-        originBill.SetDirty();
         if (isAddNew)
         {
             curBill.Customer.AddBill(originBill);
         }
+        originBill.SetDirty();
         Hide();
     }
 

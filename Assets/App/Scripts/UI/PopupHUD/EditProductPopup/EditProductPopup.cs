@@ -31,8 +31,10 @@ public class EditProductPopup : BasePopup
         ipName.onEndEdit.AddListener(OnNameEndEdit);
         ipUnitPrice.onEndEdit.AddListener(OnUnitPriceEndEdit);
         ipUnitPrice.onValueChanged.AddListener(OnUnitPriceOnValueChanged);
+        ipUnitPrice.onSelect.AddListener(OnUnitPriceOnSelected);
         ipAmount.onEndEdit.AddListener(OnAmountEndEdit);
         ipAmount.onValueChanged.AddListener(OnAmountOnValueChanged);
+        ipAmount.onSelect.AddListener(OnAmountOnSelected);
     }
 
     protected override void OnShow(Action onCompleted = null, bool instant = false)
@@ -122,6 +124,11 @@ public class EditProductPopup : BasePopup
         ShowTotalPrice();
     }
 
+    private void OnUnitPriceOnSelected(string text)
+    {
+        ipUnitPrice.SetTextWithoutNotify(curProduct.UnitPrice.ToString());
+    }
+
     private IEnumerator IDelyUnitPriceMoveEnd()
     {
         yield return null;
@@ -130,7 +137,7 @@ public class EditProductPopup : BasePopup
 
     private void ShowAmountText()
     {
-        ipAmount.text = StringHelper.GetCommaCurrencyFormat(curProduct.Amount);
+        ipAmount.SetTextWithoutNotify(StringHelper.GetCommaCurrencyFormat(curProduct.Amount));
     }
 
     private void OnAmountEndEdit(string text)
@@ -165,6 +172,11 @@ public class EditProductPopup : BasePopup
         StartCoroutine(IDelyAmountMoveEnd());*/
     }
 
+    private void OnAmountOnSelected(string text)
+    {
+        ipAmount.SetTextWithoutNotify(curProduct.Amount.ToString());
+    }
+
     private IEnumerator IDelyAmountMoveEnd()
     {
         yield return null;
@@ -181,11 +193,11 @@ public class EditProductPopup : BasePopup
             curProduct = new NewProduct();
         }
         NewProduct.Transmission(curProduct, originProduct);
-        originProduct.SetDirty();
         if (isAddNewProduct)
         {
             originProduct.GetBill().AddProduct(originProduct);
         }
+        originProduct.SetDirty();
         Hide();
     }
 

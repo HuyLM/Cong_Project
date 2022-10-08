@@ -49,10 +49,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   order: 0
-  defaultFrame: {fileID: 1812278773915448462, guid: 2f33eeaa9ed6388468e56e6fdae05a3a,
+  defaultFrame: {fileID: 8924983374563151884, guid: d12f9f2259d6bff4085a80818e444994,
     type: 3}
   frames:
-  - {fileID: 1812278773915448462, guid: 2f33eeaa9ed6388468e56e6fdae05a3a, type: 3}
   - {fileID: 6449529801134234755, guid: 575fcbd803a74a3498003ce20ab86715, type: 3}
   - {fileID: 8638136448020993210, guid: 4661f99001fcf324999302ade6060ae6, type: 3}
   - {fileID: 8924983374563151884, guid: d12f9f2259d6bff4085a80818e444994, type: 3}

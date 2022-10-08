@@ -60,6 +60,14 @@ public class NewCustomer
         }
     }
 
+    public bool IsDone
+    {
+        get
+        {
+            return Paid == TotalPrice;
+        }
+    }
+
     public NewCustomer()
     {
         lastModifiedDate = DateTime.Now;
@@ -73,17 +81,40 @@ public class NewCustomer
         LastModifiedDate = DateTime.Now;
     }
 
+    public bool SetPaid(int paid)
+    {
+        if(paid < 0 || paid > TotalPrice)
+        {
+            return false;
+        }
+        for (int i = Bills.Count-1; i >= 0; ++i)
+        {
+            NewBill bill = Bills[i];
+            int debt = bill.Debt;
+            if (debt >= paid)
+            {
+                bill.AddPaid(paid);
+                break;
+            }
+            bill.AddPaid(debt);
+            paid -= debt;
+        }
+        SetDirty();
+        LastModifiedDate = DateTime.Now;
+        return true;
+    }
+
     public bool AddPaid(int addPaid)
     {
         if(Paid + addPaid > TotalPrice)
         {
             return false;
         }
-        else if(Paid - addPaid < 0)
+        else if(Paid + addPaid < 0)
         {
             return false;
         }
-        for(int i = 0; i < Bills.Count; ++i)
+        for(int i = Bills.Count - 1; i >= 0 ; --i)
         {
             NewBill bill = Bills[i];
             if(bill.IsDone)
@@ -94,11 +125,12 @@ public class NewCustomer
             if(debt >= addPaid)
             {
                 bill.AddPaid(addPaid);
-                return true;
+                break;
             }
             bill.AddPaid(debt);
             addPaid -= debt;
         }
+        SetDirty();
         LastModifiedDate = DateTime.Now;
         return true;
     }
@@ -126,6 +158,25 @@ public class NewCustomer
         }
     }
 
+    public void SortBills()
+    {
+        Bills.Sort(delegate (NewBill x, NewBill y)
+        {
+            if ((x.Debt == 0 && y.Debt == 0) || (x.Debt != 0 && y.Debt != 0))
+            {
+                if (x.CreateDate.Date.CompareTo(y.CreateDate.Date) == 0)
+                {
+                    return x.DeliveryDate.Date.CompareTo(y.DeliveryDate.Date) * -1;
+                }
+                return x.CreateDate.Date.CompareTo(y.CreateDate.Date) * -1;
+            }
+            if (x.Debt == 0)
+            {
+                return 1;
+            }
+            return 0;
+        });
+    }
     private void CalculatingPrice()
     {
         totalPrice = 0;
@@ -142,6 +193,7 @@ public class NewCustomer
     public void SetDirty()
     {
         isDirty = true;
+        SortBills();
     }
 
     public static void Transmission(NewCustomer from, NewCustomer to)

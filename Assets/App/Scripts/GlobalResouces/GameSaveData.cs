@@ -65,14 +65,7 @@ public class GameSaveData : Singleton<GameSaveData>
 
         foreach(var c in customers)
         {
-            c.Bills.Sort(delegate (NewBill x, NewBill y)
-            {
-                if(x.CreateDate.Date.CompareTo(y.CreateDate.Date) == 0)
-                {
-                    return x.DeliveryDate.Date.CompareTo(y.DeliveryDate.Date) * -1;
-                }
-                return x.CreateDate.Date.CompareTo(y.CreateDate.Date) * -1;
-            });
+            c.SortBills();
         }
 
         GameData.Instance.Customers = customers;
@@ -149,6 +142,7 @@ public class GameSaveData : Singleton<GameSaveData>
         {
             customers = new List<NewCustomer>();
             password = string.Empty;
+            GameData.Instance.ShowMode = 0;
             return 0;
         }
         customers = new List<NewCustomer>();
@@ -170,6 +164,7 @@ public class GameSaveData : Singleton<GameSaveData>
         {
             return -1;
         }
+        GameData.Instance.ShowMode = saveData.showMode;
         await SaveData(true);
         return 0;
     }
@@ -185,6 +180,7 @@ public class GameSaveData : Singleton<GameSaveData>
         SaveDataModel saveData = new SaveDataModel(customers.Count);
         saveData.password = password;
         saveData.isUsing = false;//isUsing;
+        saveData.showMode = GameData.Instance.ShowMode;
         int index = 0;
         foreach (var item in customers)
         {
@@ -220,6 +216,7 @@ public class GameSaveData : Singleton<GameSaveData>
         public NewCustomer[] cs;
         public bool isUsing;
         public string password;
+        public int showMode;
 
 
         public SaveDataModel(int capacity)

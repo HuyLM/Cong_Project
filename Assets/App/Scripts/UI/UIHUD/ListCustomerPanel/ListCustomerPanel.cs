@@ -1,4 +1,4 @@
-using AtoLib;
+﻿using AtoLib;
 using AtoLib.Helper;
 using AtoLib.UI;
 using System;
@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
+using System.Linq;
 
 public class ListCustomerPanel : DOTweenFrame
 {
@@ -16,15 +17,48 @@ public class ListCustomerPanel : DOTweenFrame
     [SerializeField] private TextMeshProUGUI txtTotalPrice;
     [SerializeField] private TextMeshProUGUI txtTotalPaid;
     [SerializeField] private TextMeshProUGUI txtTotalDebt;
+    [SerializeField] private ButtonBase btnOption;
 
     private string curSearchName;
     private List<NewCustomer> results;
+
+    private OptionSelect[] options;
 
     private void Start()
     {
         results = new List<NewCustomer>();
         btnBack.onClick.AddListener(OnBackButtonClicked);
         cbName.OnSelectionChanged.AddListener(OnNameSelectionChanged);
+        btnOption.onClick.AddListener(OnOptionSelectButtonClicked);
+
+        options = new OptionSelect[] {
+            new OptionSelect(){ Text = "Thêm mới",  OnSelect = AddNew},
+            new OptionSelect(){ Text = "Đổi mật khẩu",  OnSelect = ChangePassword},
+            new OptionSelect(){ Id = "showModeOption", Text =  "Show Mode",  OnSelect = ChangeShowMode},
+        };
+        LoadShowModeOption();
+    }
+    private void LoadShowModeOption()
+    {
+        OptionSelect optionSelect = options.FirstOrDefault<OptionSelect>(o => o.Id.Equals("showModeOption"));
+
+        int showMode = GameData.Instance.ShowMode;
+        string showModeText = "Show mode text";
+        if (showMode == 0)
+        {
+            showModeText = "Chỉ hiện đang nợ";
+        }
+        else if (showMode == 1)
+        {
+            showModeText = "Hiện tất cả";
+        }
+        optionSelect.Text = showModeText;
+    }
+
+
+    public override Frame OnBack()
+    {
+        return this;
     }
 
 
@@ -61,14 +95,14 @@ public class ListCustomerPanel : DOTweenFrame
 
     }
 
-    private void OpenListBill(NewCustomer customer)
+    private void OpenListBill(NewCustomer customer, bool isAddNew)
     {
         //Hide();
         Pause();
 
         Pause();
         ListBillPanel listBillPanel = UIHUD.Instance.GetFrame<ListBillPanel>();
-        listBillPanel.SetCustomer(customer, false);
+        listBillPanel.SetCustomer(customer, isAddNew);
         UIHUD.Instance.Show<ListBillPanel>();
     }
 
@@ -78,6 +112,10 @@ public class ListCustomerPanel : DOTweenFrame
         results = new List<NewCustomer>();
         foreach (var b in customers)
         {
+            if (GameData.Instance.ShowMode == 1 && b.Debt <= 0)
+            {
+                continue;
+            }
             if (string.IsNullOrEmpty(curSearchName) || b.CustomerName.Equals(curSearchName) || curSearchName.Equals("all"))
             {
                 results.Add(b);
@@ -88,12 +126,19 @@ public class ListCustomerPanel : DOTweenFrame
 
     private void OnSelectCustomerRow(CustomerRowDisplayer displayer)
     {
-        OpenListBill(displayer.Model);
+        OpenListBill(displayer.Model, false);
     }
 
     private void OnBackButtonClicked()
     {
         OnBack();
+    }
+
+    private void OnOptionSelectButtonClicked()
+    {
+        OptionPopup optionPopup = PopupHUD.Instance.GetFrame<OptionPopup>();
+        optionPopup.SetOptions(options);
+        PopupHUD.Instance.Show<OptionPopup>();
     }
 
     private void OnNameSelectionChanged(string text, bool isSelect)
@@ -134,4 +179,33 @@ public class ListCustomerPanel : DOTweenFrame
         }
         txtTotalDebt.text = StringHelper.GetCommaCurrencyFormat(total);
     }
+    #region Options
+    private void AddNew()
+    {
+        NewCustomer newCustomer = new NewCustomer();
+        OpenListBill(newCustomer, true);
+    }
+
+    private void ChangePassword()
+    {
+        PopupHUD.Instance.Show<ChangePasswordPopup>();
+    }
+
+    private void ChangeShowMode()
+    {
+        if (GameData.Instance.ShowMode == 0)
+        {
+            // to do: chi hien dang no
+            GameData.Instance.ShowMode = 1;
+        }
+        else if (GameData.Instance.ShowMode == 1)
+        {
+            // to do: hien tat
+            GameData.Instance.ShowMode = 0;
+        }
+        LoadShowModeOption();
+        ShowCustomers();
+
+    }
+    #endregion
 }

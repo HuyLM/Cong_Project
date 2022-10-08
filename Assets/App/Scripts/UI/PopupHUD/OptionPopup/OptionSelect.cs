@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class OptionSelect
 {
+    public string Id = string.Empty;
     public string Text;
     public Action OnSelect;
 }

@@ -28,6 +28,7 @@ public class CustomerRowDisplayer : ViewDisplayer<NewCustomer>
         {
             return;
         }
+        txtName.color = GlobalResouces.Instance.UIConfigResource.GetBillColor(Model.IsDone ? BillState.Done : BillState.Debt);
         txtName.text = Model.CustomerName;
         txtModifier.text = Model.LastModifiedDate.ToString("dd/MM/yyyy HH:mm");
         txtPaid.text = StringHelper.GetCommaCurrencyFormat(Model.Paid);
