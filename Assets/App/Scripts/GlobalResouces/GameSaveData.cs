@@ -37,6 +37,7 @@ public class GameSaveData : Singleton<GameSaveData>
         }
         else
         {
+            Debug.LogError("Start LoadDataWithData.......");
             result = await LoadDataWithData();
         }
         LoadingHUD.Instance.Hide<LoadingPanel>();
@@ -122,7 +123,7 @@ public class GameSaveData : Singleton<GameSaveData>
     {
         List<NewCustomer> customers = null;
         // find file data
-        var files = await UnityGoogleDriveHelper.FindFilesByPathAsync(pathFileOnlineTest, fields: new List<string> { "files(id, name, size, mimeType, modifiedTime)" });
+        var files = await UnityGoogleDriveHelper.FindFilesByPathAsync(pathFileOnline, fields: new List<string> { "files(id, name, size, mimeType, modifiedTime)" });
         // download content data
         UnityGoogleDrive.Data.File file = await UnityGoogleDriveHelper.GetFileWithContent(files[0].Id, "text/plain");
         // content byte[] to string json
@@ -189,8 +190,8 @@ public class GameSaveData : Singleton<GameSaveData>
         }
         string json = JsonUtility.ToJson(saveData);
         PlayerPrefs.SetString(saveKey, json);
-        UnityGoogleDrive.Data.File file = new UnityGoogleDrive.Data.File() { Name = "test", Content = System.Text.Encoding.Default.GetBytes(json) };
-        await UnityGoogleDriveHelper.CreateOrUpdateFileAtPathAsync(file, pathFileOnlineTest);
+        UnityGoogleDrive.Data.File file = new UnityGoogleDrive.Data.File() { Name = "data", Content = System.Text.Encoding.Default.GetBytes(json) };
+        await UnityGoogleDriveHelper.CreateOrUpdateFileAtPathAsync(file, pathFileOnline);
         LoadingHUD.Instance.Hide<LoadingPanel>();
         return 0;
     }

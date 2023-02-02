@@ -23,8 +23,8 @@ MonoBehaviour:
     - http://localhost
     - https://atomi1612.itch.io
   uriSchemeClientCredentials:
-    clientId: 294760973660-erc54g720au9saqrhk4bkbf0kq0j38c7.apps.googleusercontent.com
-    reversedClientId: com.googleusercontent.apps.294760973660-erc54g720au9saqrhk4bkbf0kq0j38c7
+    clientId: 294760973660-703m3bg1spjs2ttnk031t8bom8qln2qd.apps.googleusercontent.com
+    reversedClientId: com.googleusercontent.apps.294760973660-703m3bg1spjs2ttnk031t8bom8qln2qd
     plistVersion: 1
     bundleId: ai.ftech.game.racing
   accessScopes:

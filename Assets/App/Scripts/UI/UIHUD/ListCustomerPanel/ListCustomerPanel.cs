@@ -30,6 +30,7 @@ public class ListCustomerPanel : DOTweenFrame
         btnBack.onClick.AddListener(OnBackButtonClicked);
         cbName.OnSelectionChanged.AddListener(OnNameSelectionChanged);
         btnOption.onClick.AddListener(OnOptionSelectButtonClicked);
+        cbName.OnSelectionTextChanged.AddListener(OnNameSelectionTextChanged);
 
         options = new OptionSelect[] {
             new OptionSelect(){ Text = "Thêm mới",  OnSelect = AddNew},
@@ -145,6 +146,15 @@ public class ListCustomerPanel : DOTweenFrame
     {
         curSearchName = text;
         if (isSelect)
+        {
+            ShowCustomers();
+        }
+    }
+
+    private void OnNameSelectionTextChanged(string text)
+    {
+        curSearchName = text;
+        if(string.IsNullOrEmpty(curSearchName))
         {
             ShowCustomers();
         }
