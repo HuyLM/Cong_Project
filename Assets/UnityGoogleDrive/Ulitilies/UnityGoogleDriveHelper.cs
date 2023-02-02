@@ -63,8 +63,9 @@ public static class UnityGoogleDriveHelper {
         var result = new List<UnityGoogleDrive.Data.File>();
 
         var fileName = Path.GetFileName(path);
-
+        Debug.LogError("FindFilesByPathAsync-1");
         var parentIds = await ValidatePath(path, appData);
+        Debug.LogError("FindFilesByPathAsync-2");
         if (parentIds == null)
             return result;
 
@@ -81,8 +82,11 @@ public static class UnityGoogleDriveHelper {
 
         string pageToken = null;
         do {
+            Debug.LogError("FindFilesByPathAsync-3");
             var listRequest = GoogleDriveFiles.List(query, fields, appData ? AppDataSpace : DriveSpace, pageToken);
+            Debug.LogError("FindFilesByPathAsync-4");
             var fileList = await listRequest.Send();
+            Debug.LogError("FindFilesByPathAsync-5");
             if (fileList?.Files?.Count > 0)
                 result.AddRange(fileList.Files);
             pageToken = fileList?.NextPageToken;

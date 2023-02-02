@@ -164,6 +164,8 @@ namespace UnityGoogleDrive
 
         protected virtual UnityWebRequest CreateWebRequest ()
         {
+            Debug.LogError("CreateWebRequest: 1");
+
             var webRequest = new UnityWebRequest(Uri, Method);
             SetAuthorizationHeader(webRequest);
             SetDefaultContentHeader(webRequest);
@@ -190,6 +192,8 @@ namespace UnityGoogleDrive
         protected void SetAuthorizationHeader (UnityWebRequest webRequest)
         {
             webRequest.SetRequestHeader("Authorization", $"Bearer {AuthController.AccessToken}");
+            Debug.LogError("SetAuthorizationHeader: " + $"Bearer {AuthController.AccessToken}");
+
         }
 
         protected void SetDefaultContentHeader (UnityWebRequest webRequest)
@@ -200,6 +204,7 @@ namespace UnityGoogleDrive
         protected void SetQueryPayload (UnityWebRequest webRequest)
         {
             webRequest.url = string.Concat(webRequest.url, "?", GenerateQueryString());
+            Debug.LogError("SetQueryPayload: " + webRequest.url);
         }
 
         protected void CompleteRequest ()
@@ -223,7 +228,9 @@ namespace UnityGoogleDrive
             }
 
             WebRequest = CreateWebRequest();
+            Debug.LogError("SendWebRequest: 1");
             WebRequest.SendWebRequest().completed += HandleWebRequestDone;
+            Debug.LogError("SendWebRequest: 2");
         }
 
         protected virtual void HandleWebRequestDone (AsyncOperation requestYield)
@@ -233,14 +240,16 @@ namespace UnityGoogleDrive
                 HandleUnauthorizedResponse();
                 return;
             }
+            Debug.LogError("HandleWebRequestDone: 1");
 
             AppendError(WebRequest.error);
-
+            Debug.LogError("HandleWebRequestDone: 2");
             HandleResponseData(WebRequest.downloadHandler);
-
+            Debug.LogError("HandleWebRequestDone: 3");
             if (IsError) Debug.LogError("UnityGoogleDrive: " + Error);
-
+            Debug.LogError("HandleWebRequestDone: 4");
             if (AutoCompleteOnDone) CompleteRequest();
+            Debug.LogError("HandleWebRequestDone: 5");
         }
 
         protected void AppendError (string newError)
@@ -252,6 +261,7 @@ namespace UnityGoogleDrive
 
         private void HandleUnauthorizedResponse ()
         {
+            Debug.LogError("HandleUnauthorizedResponse: 1");
             AuthController.OnAccessTokenRefreshed += HandleAccessTokenRefreshed;
             AuthController.RefreshAccessToken();
         }

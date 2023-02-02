@@ -121,52 +121,77 @@ public class GameSaveData : Singleton<GameSaveData>
 
     private async Task<int> LoadDataWithData()
     {
-        List<NewCustomer> customers = null;
-        // find file data
-        var files = await UnityGoogleDriveHelper.FindFilesByPathAsync(pathFileOnline, fields: new List<string> { "files(id, name, size, mimeType, modifiedTime)" });
-        // download content data
-        UnityGoogleDrive.Data.File file = await UnityGoogleDriveHelper.GetFileWithContent(files[0].Id, "text/plain");
-        // content byte[] to string json
-        string json = string.Empty;
-        if (file != null && file.Content != null)
-        {
-            string json1 = System.Text.Encoding.UTF8.GetString(file.Content, 3, file.Content.Length - 3);
-            json = json1.Clone().ToString();
-        }
-        SaveDataModel saveData = null;
-        if (!string.IsNullOrEmpty(json))
-        {
-            saveData = JsonUtility.FromJson<SaveDataModel>(json);
-        }
+        var settings = UnityGoogleDrive.GoogleDriveSettings.LoadFromResources(true);
 
-        if (saveData == null)
+        Debug.LogError("LoadDataWithData: IsAnyAuthTokenCached-" + settings.IsAnyAuthTokenCached());
+        //settings.DeleteCachedAuthTokens();
+        //UnityGoogleDrive.AuthController.RefreshAccessToken();
+        //return 0;
+        bool needGetAccessToken = false;
+
+#if !UNITY_EDITOR && UNITY_WEBGL
+        needGetAccessToken = settings.IsAnyAuthTokenCached() == false;
+#endif
+        if (needGetAccessToken == true)
         {
-            customers = new List<NewCustomer>();
-            password = string.Empty;
-            GameData.Instance.ShowMode = 0;
-            return 0;
+            Debug.LogError("LoadDataWithData: 1");
+            UnityGoogleDrive.AuthController.RefreshAccessToken();
         }
-        customers = new List<NewCustomer>();
-        foreach (var item in saveData.cs)
+        else
         {
-            customers.Add(item);
-            foreach (var b in item.Bills)
+            Debug.LogError("LoadDataWithData: 2");
+            List<NewCustomer> customers = null;
+            // find file data
+            Debug.LogError("LoadDataWithData-1");
+            var files = await UnityGoogleDriveHelper.FindFilesByPathAsync(pathFileOnline, fields: new List<string> { "files(id, name, size, mimeType, modifiedTime)" });
+            Debug.LogError("LoadDataWithData-2");
+            // download content data
+            UnityGoogleDrive.Data.File file = await UnityGoogleDriveHelper.GetFileWithContent(files[0].Id, "text/plain");
+            Debug.LogError("LoadDataWithData-3");
+
+            // content byte[] to string json
+            string json = string.Empty;
+            if (file != null && file.Content != null)
             {
-                b.SetCustomer(item);
-                foreach(var p in b.Products)
+                string json1 = System.Text.Encoding.UTF8.GetString(file.Content, 3, file.Content.Length - 3);
+                json = json1.Clone().ToString();
+            }
+            SaveDataModel saveData = null;
+            if (!string.IsNullOrEmpty(json))
+            {
+                saveData = JsonUtility.FromJson<SaveDataModel>(json);
+            }
+
+            if (saveData == null)
+            {
+                customers = new List<NewCustomer>();
+                password = string.Empty;
+                GameData.Instance.ShowMode = 0;
+                return 0;
+            }
+            customers = new List<NewCustomer>();
+            foreach (var item in saveData.cs)
+            {
+                customers.Add(item);
+                foreach (var b in item.Bills)
                 {
-                    p.SetBill(b);
+                    b.SetCustomer(item);
+                    foreach (var p in b.Products)
+                    {
+                        p.SetBill(b);
+                    }
                 }
             }
+            GameData.Instance.Customers = customers;
+            password = saveData.password;
+            if (saveData.isUsing == true)
+            {
+                return -1;
+            }
+            GameData.Instance.ShowMode = saveData.showMode;
+            await SaveData(true);
+            return 0;
         }
-        GameData.Instance.Customers = customers;
-        password = saveData.password;
-        if (saveData.isUsing == true)
-        {
-            return -1;
-        }
-        GameData.Instance.ShowMode = saveData.showMode;
-        await SaveData(true);
         return 0;
     }
 
