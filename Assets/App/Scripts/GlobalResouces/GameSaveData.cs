@@ -129,7 +129,7 @@ public class GameSaveData : Singleton<GameSaveData>
         //return 0;
         bool needGetAccessToken = false;
 
-#if !UNITY_EDITOR && UNITY_WEBGL
+#if !UNITY_EDITOR && (UNITY_WEBGL || UNITY_ANDROID)
         needGetAccessToken = settings.IsAnyAuthTokenCached() == false;
 #endif
         if (needGetAccessToken == true)
